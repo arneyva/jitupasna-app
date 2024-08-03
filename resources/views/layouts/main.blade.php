@@ -23,7 +23,7 @@
             <div class="main-content container-fluid">
                 @yield('content')
             </div>
-            @include('layouts.footer')
+            {{-- @include('layouts.footer') --}}
         </div>
     </div>
     <script src="{{ 'frontend/dist/assets/js/feather-icons/feather.min.js' }}"></script>

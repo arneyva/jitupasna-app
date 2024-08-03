@@ -5,18 +5,48 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <li class='sidebar-title'>Main Menu</li>
+                {{-- <li class='sidebar-title'>Main Menu</li> --}}
                 <li class="sidebar-item active ">
                     <a href="index.html" class='sidebar-link'>
                         <i data-feather="home" width="20"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-
-
-
-
                 <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i data-feather="triangle" width="20"></i>
+                        <span>Jitupasna</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="component-alert.html">Tambah Bencana</a>
+                        </li>
+                        <li>
+                            <a href="component-alert.html">Damage</a>
+                        </li>
+                        <li>
+                            <a href="component-alert.html">Needs</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i data-feather="triangle" width="20"></i>
+                        <span>Jitupasna</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="component-alert.html">Tambah Bencana</a>
+                        </li>
+                        <li>
+                            <a href="component-alert.html">Damage</a>
+                        </li>
+                        <li>
+                            <a href="component-alert.html">Needs</a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i>
                         <span>Components</span>
@@ -83,10 +113,6 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="briefcase" width="20"></i>
@@ -106,14 +132,7 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class='sidebar-title'>Forms &amp; Tables</li>
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="file-text" width="20"></i>
@@ -149,10 +168,6 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  ">
                     <a href="form-layout.html" class='sidebar-link'>
                         <i data-feather="layout" width="20"></i>
@@ -160,10 +175,6 @@
                     </a>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  ">
                     <a href="form-editor.html" class='sidebar-link'>
                         <i data-feather="layers" width="20"></i>
@@ -171,10 +182,6 @@
                     </a>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  ">
                     <a href="table.html" class='sidebar-link'>
                         <i data-feather="grid" width="20"></i>
@@ -182,10 +189,6 @@
                     </a>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  ">
                     <a href="table-datatable.html" class='sidebar-link'>
                         <i data-feather="file-plus" width="20"></i>
@@ -193,14 +196,7 @@
                     </a>
 
                 </li>
-
-
-
-
                 <li class='sidebar-title'>Extra UI</li>
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="user" width="20"></i>
@@ -224,10 +220,6 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="trending-up" width="20"></i>
@@ -247,14 +239,7 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class='sidebar-title'>Pages</li>
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="user" width="20"></i>
@@ -278,10 +263,6 @@
                     </ul>
 
                 </li>
-
-
-
-
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="alert-circle" width="20"></i>
@@ -304,11 +285,7 @@
 
                     </ul>
 
-                </li>
-
-
-
-
+                </li> --}}
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
