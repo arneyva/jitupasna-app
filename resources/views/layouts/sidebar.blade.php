@@ -1,7 +1,7 @@
 <div id="sidebar" class='active'>
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
-            <img src="{{ 'frontend/dist/assets/images/logo.svg' }}" alt="" srcset="">
+            <img src="{{ asset('frontend/dist/assets/images/logo.svg') }}" alt="" srcset="">
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
@@ -19,17 +19,17 @@
                     </a>
                     <ul class="submenu ">
                         <li>
-                            <a href="component-alert.html">Tambah Bencana</a>
+                            <a href="component-alert.html">Bencana</a>
                         </li>
                         <li>
-                            <a href="component-alert.html">Damage</a>
+                            <a href="component-alert.html">Kerusakan</a>
                         </li>
                         <li>
-                            <a href="component-alert.html">Needs</a>
+                            <a href="component-alert.html">Kerugian</a>
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item  has-sub">
+                {{-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i>
                         <span>Jitupasna</span>
@@ -45,7 +45,7 @@
                             <a href="component-alert.html">Needs</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 {{-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i>
