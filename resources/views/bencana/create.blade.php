@@ -18,10 +18,10 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="first-name-column">Tipe Bencana</label>
+                                            <label for="first-name-column">Kategori Bencana</label>
                                             <div class="form-group">
                                                 <select class="choices form-select" name="">
-                                                    <option selected disabled value="">{{ __('Choose...') }}</option>
+                                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
                                                     @foreach ($kategoribencana as $item)
                                                         <option value="{{ $item->id }}"
                                                             {{ old('brand_id') == $item->id ? 'selected' : '' }}>

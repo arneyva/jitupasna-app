@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class KategoriKerusakan extends Model
+class KategoriBangunan extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'kategori_kerusakan';
+    protected $table = 'kategori_bangunan';
 
-    protected $fillable = ['nama', 'level', 'deskripsi'];
+    protected $fillable = ['nama', 'deskripsi'];
 
     protected $dates = ['deleted_at'];
 }
