@@ -19,6 +19,7 @@ Route::prefix('/bencana')->name('bencana.')->group(function () {
     Route::get('list', [BencanaController::class, 'index'])->name('index');
     Route::get('create', [BencanaController::class, 'create'])->name('create');
     Route::post('store', [BencanaController::class, 'store'])->name('store');
+    Route::get('detail/{id}', [BencanaController::class, 'show'])->name('show');
 });
 Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
     Route::get('list', [BencanaController::class, 'index'])->name('index');

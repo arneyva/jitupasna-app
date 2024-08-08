@@ -17,4 +17,8 @@ class Kerusakan extends Model
         'deskripsi',
     ];
     protected $dates = ['deleted_at'];
+    public function detail()
+    {
+        return $this->hasMany(DetailKerusakan::class, 'kerusakan_id', 'id');
+    }
 }
