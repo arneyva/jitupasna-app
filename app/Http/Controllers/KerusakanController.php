@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bencana;
+use App\Models\DetailKerusakan;
 use App\Models\KategoriBangunan;
+use App\Models\Kerusakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,19 +39,41 @@ class KerusakanController extends Controller
      */
     public function store(Request $request, $id)
     {
-        Bencana::where('id', $id)->first();
+        // dd($request->all());
+        $bencana = Bencana::where('id', $id)->first();
         try {
             DB::beginTransaction();
             $kerusakanRules = $request->validate([
-                'bencana_id' => 'required',
                 'kategori_bangunan_id' => 'required',
                 'kuantitas' => 'required',
                 'deskripsi' => 'required',
             ]);
-            
-            dd($request->all());
-        } catch (\Throwable $th) {
-            //throw $th;
+            $kerusakan =  new Kerusakan();
+            $kerusakan->bencana_id = $bencana->id;
+            $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
+            $kerusakan->kuantitas = $kerusakanRules['kuantitas'];
+            $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
+            $kerusakan->save();
+            // simpan detail kerusakan
+            // $details = json_decode($request->details);
+            $details_kerusakan = [];
+            foreach ($request->details as $detail) {
+                $details_kerusakan[] = [
+                    'kerusakan_id' => $kerusakan->id,
+                    'tipe' => $detail['tipe'],
+                    'nama' => $detail['nama'],
+                    'kuantitas' => $detail['kuantitas'],
+                    'satuan' => $detail['satuan'],
+                    'harga' => $detail['harga'],
+                    'created_at' => now(),
+                ];
+            }
+            // dd($request->all());
+            DetailKerusakan::insert($details_kerusakan); //memasukan data ke database
+            DB::commit();
+            return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
 
