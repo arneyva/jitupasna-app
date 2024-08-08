@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bencana;
 use App\Models\KategoriBangunan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class KerugianController extends Controller
+class KerusakanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,22 +20,37 @@ class KerugianController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
+        $bencana = Bencana::where('id', $id)->first();
         $kategoriBangunan = KategoriBangunan::query()->get();
 
         // dd($kategoriBangunan);
-        return view('kerugian.create', [
+        return view('kerusakan.create', [
             'kategoribangunan' => $kategoriBangunan,
+            'bencana' => $bencana
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        Bencana::where('id', $id)->first();
+        try {
+            DB::beginTransaction();
+            $kerusakanRules = $request->validate([
+                'bencana_id' => 'required',
+                'kategori_bangunan_id' => 'required',
+                'kuantitas' => 'required',
+                'deskripsi' => 'required',
+            ]);
+            
+            dd($request->all());
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
