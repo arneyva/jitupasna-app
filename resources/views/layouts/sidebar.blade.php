@@ -19,7 +19,7 @@
                     </a>
                     <ul class="submenu ">
                         <li>
-                            <a href="component-alert.html">Bencana</a>
+                            <a href="{{ route('bencana.index') }}">Bencana</a>
                         </li>
                         <li>
                             <a href="component-alert.html">Kerusakan</a>

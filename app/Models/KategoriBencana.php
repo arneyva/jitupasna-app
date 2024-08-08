@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class KategoriBencana extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $table = 'kategori_bencana';
+
     protected $fillable = ['nama', 'deskripsi'];
+
     protected $dates = ['deleted_at'];
 }

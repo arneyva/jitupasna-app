@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KategoriBencana;
+use App\Models\KategoriBangunan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class BencanaController extends Controller
+class KerugianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('bencana.index');
+        //
     }
 
     /**
@@ -21,10 +20,11 @@ class BencanaController extends Controller
      */
     public function create()
     {
-        $kategoriBencana = KategoriBencana::query()->get();
+        $kategoriBangunan = KategoriBangunan::query()->get();
 
-        return view('bencana.create', [
-            'kategoribencana' => $kategoriBencana,
+        // dd($kategoriBangunan);
+        return view('kerugian.create', [
+            'kategoribangunan' => $kategoriBangunan,
         ]);
     }
 
@@ -33,19 +33,7 @@ class BencanaController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $bencaRules = $request->validate([
-                'kategoribencana_id' => 'required',
-                'lokasi' => 'required',
-                'deskripsi' => 'required',
-                'waktu' => 'required',
-                'lokasi' => 'required',
-                'luas' => 'required',
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        //
     }
 
     /**
