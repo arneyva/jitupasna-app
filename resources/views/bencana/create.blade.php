@@ -14,17 +14,18 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form">
+                            <form class="form" action="{{ route('bencana.store') }}" method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="first-name-column">Kategori Bencana</label>
                                             <div class="form-group">
-                                                <select class="choices form-select" name="">
+                                                <select class="choices form-select" name="kategori_bencana_id">
                                                     <option selected disabled value="">{{ __('Pilih...') }}</option>
                                                     @foreach ($kategoribencana as $item)
                                                         <option value="{{ $item->id }}"
-                                                            {{ old('brand_id') == $item->id ? 'selected' : '' }}>
+                                                            {{ old('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
                                                             {{ $item->nama }}
                                                         </option>
                                                     @endforeach
@@ -36,7 +37,7 @@
                                         <div class="form-group">
                                             <label for="last-name-column">Lokasi Kejadian</label>
                                             <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                                name="lname-column">
+                                                name="lokasi">
                                         </div>
                                     </div>
                                 </div>
@@ -45,28 +46,28 @@
                                         <div class="form-group">
                                             <label for="last-name-column">Tanggal Mulai Bencana</label>
                                             <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="lname-column">
+                                                name="tgl_mulai">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="last-name-column">Tanggal Berakhir Bencana</label>
                                             <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="lname-column">
+                                                name="tgl_selesai">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="company-column">Deskripsi</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
                                     </div>
                                 </div>
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                                </div>
                             </form>
-                            <div class="col-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
-                                <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
-                            </div>
                         </div>
                     </div>
                 </div>
