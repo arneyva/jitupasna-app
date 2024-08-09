@@ -17,6 +17,7 @@ class KerusakanController extends Controller
     public function index()
     {
         $kerusakan = Kerusakan::query()->with(['bencana', 'kategori_bangunan'])->latest()->get();
+
         return view('kerusakan.index', [
             'kerusakan' => $kerusakan,
         ]);
@@ -33,7 +34,7 @@ class KerusakanController extends Controller
         // dd($kategoriBangunan);
         return view('kerusakan.create', [
             'kategoribangunan' => $kategoriBangunan,
-            'bencana' => $bencana
+            'bencana' => $bencana,
         ]);
     }
 
@@ -51,7 +52,7 @@ class KerusakanController extends Controller
                 'kuantitas' => 'required',
                 'deskripsi' => 'required',
             ]);
-            $kerusakan =  new Kerusakan();
+            $kerusakan = new Kerusakan;
             $kerusakan->bencana_id = $bencana->id;
             $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
             $kerusakan->kuantitas = $kerusakanRules['kuantitas'];
@@ -80,6 +81,7 @@ class KerusakanController extends Controller
             $kerusakan->BiayaKeseluruhan = $GrandTotal;
             $kerusakan->save();
             DB::commit();
+
             return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();

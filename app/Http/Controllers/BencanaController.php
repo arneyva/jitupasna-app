@@ -15,6 +15,7 @@ class BencanaController extends Controller
     public function index()
     {
         $bencana = Bencana::query()->latest()->get();
+
         return view('bencana.index', [
             'bencana' => $bencana,
         ]);
@@ -31,6 +32,7 @@ class BencanaController extends Controller
             'kategoribencana' => $kategoriBencana,
         ]);
     }
+
     public function getRef()
     {
 
@@ -40,13 +42,14 @@ class BencanaController extends Controller
             $item = $last->Ref;
             $nwMsg = explode('_', $item);
             $inMsg = $nwMsg[1] + 1;
-            $code = $nwMsg[0] . '_' . $inMsg;
+            $code = $nwMsg[0].'_'.$inMsg;
         } else {
             $code = 'DISASTER_1';
         }
 
         return $code;
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -72,11 +75,13 @@ class BencanaController extends Controller
             ]);
             // dd($request->all());
             DB::commit();
+
             return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: ' . $th->getMessage());
+            \Log::error('Error storing bencana: '.$th->getMessage());
+
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
     }

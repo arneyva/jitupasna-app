@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BencanaController;
-use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use Illuminate\Support\Facades\Route;
 
