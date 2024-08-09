@@ -14,7 +14,7 @@ class BencanaController extends Controller
      */
     public function index()
     {
-        $bencana = Bencana::query()->get();
+        $bencana = Bencana::query()->latest()->get();
         return view('bencana.index', [
             'bencana' => $bencana,
         ]);
@@ -31,7 +31,22 @@ class BencanaController extends Controller
             'kategoribencana' => $kategoriBencana,
         ]);
     }
+    public function getRef()
+    {
 
+        $last = DB::table('bencana')->latest('id')->first();
+
+        if ($last) {
+            $item = $last->Ref;
+            $nwMsg = explode('_', $item);
+            $inMsg = $nwMsg[1] + 1;
+            $code = $nwMsg[0] . '_' . $inMsg;
+        } else {
+            $code = 'DISASTER_1';
+        }
+
+        return $code;
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -50,6 +65,7 @@ class BencanaController extends Controller
                 // 'user_id' => auth()->user()->id,
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
                 'lokasi' => $bencaRules['lokasi'],
+                'Ref' => $this->getRef(),
                 'deskripsi' => $bencaRules['deskripsi'],
                 'tgl_mulai' => $bencaRules['tgl_mulai'],
                 'tgl_selesai' => $bencaRules['tgl_selesai'],

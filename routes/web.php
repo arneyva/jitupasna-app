@@ -22,7 +22,7 @@ Route::prefix('/bencana')->name('bencana.')->group(function () {
     Route::get('detail/{id}', [BencanaController::class, 'show'])->name('show');
 });
 Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
-    Route::get('list', [BencanaController::class, 'index'])->name('index');
+    Route::get('list', [KerusakanController::class, 'index'])->name('index');
     Route::get('create/{id}', [KerusakanController::class, 'create'])->name('create');
     Route::post('store/{id}', [KerusakanController::class, 'store'])->name('store');
 });

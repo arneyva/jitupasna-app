@@ -5,30 +5,28 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Data Kejadian Bencana</h4>
-                    <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a>
+                    <h4 class="card-title mb-0">Data Kerusakan Dampak Bencana</h4>
+                    {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Ref</th>
-                                    <th>Kategori</th>
-                                    <th>Lokasi</th>
-                                    <th>Tanggal Mulai</th>
-                                    <th>Tanggal Berakhir</th>
+                                    <th>Bencana Ref</th>
+                                    <th>Kategori Bagunan</th>
+                                    <th>Kuantitas</th>
+                                    <th>Estimasi Biaya Total</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($bencana as $item)
+                                @foreach ($kerusakan as $item)
                                     <tr>
-                                        <td>{{ $item->Ref }}</td>
-                                        <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td>
-                                        <td>{{ $item->lokasi }}</td>
-                                        <td class="text-bold-500">{{ $item->tgl_mulai }}</td>
-                                        <td>{{ $item->tgl_selesai }}</td>
+                                        <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
+                                        <td>{{ $item->kategori_bangunan->nama }}</td>
+                                        <td class="text-bold-500">{{ $item->kuantitas }}</td>
+                                        <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
                                         <td>
                                             <a href="{{ route('kerusakan.create', $item->id) }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em"

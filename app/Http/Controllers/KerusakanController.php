@@ -16,7 +16,10 @@ class KerusakanController extends Controller
      */
     public function index()
     {
-        //
+        $kerusakan = Kerusakan::query()->with(['bencana', 'kategori_bangunan'])->latest()->get();
+        return view('kerusakan.index', [
+            'kerusakan' => $kerusakan,
+        ]);
     }
 
     /**
@@ -55,9 +58,11 @@ class KerusakanController extends Controller
             $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
             $kerusakan->save();
             // simpan detail kerusakan
-            // $details = json_decode($request->details);
+            $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
+                $subtotal = $detail['kuantitas'] * $detail['harga'];
+                $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
                     'tipe' => $detail['tipe'],
@@ -68,8 +73,12 @@ class KerusakanController extends Controller
                     'created_at' => now(),
                 ];
             }
+            $GrandTotal = $biayaKeseluruhan * $kerusakanRules['kuantitas'];
             // dd($request->all());
             DetailKerusakan::insert($details_kerusakan); //memasukan data ke database
+            // Perbarui kerusakan dengan total biaya keseluruhan
+            $kerusakan->BiayaKeseluruhan = $GrandTotal;
+            $kerusakan->save();
             DB::commit();
             return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
