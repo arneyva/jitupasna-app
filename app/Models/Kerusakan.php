@@ -15,10 +15,19 @@ class Kerusakan extends Model
         'kategori_kerusakan_id',
         'kuantitas',
         'deskripsi',
+        'BiayaKeseluruhan'
     ];
     protected $dates = ['deleted_at'];
     public function detail()
     {
         return $this->hasMany(DetailKerusakan::class, 'kerusakan_id', 'id');
+    }
+    public function bencana()
+    {
+        return $this->belongsTo(Bencana::class, 'bencana_id', 'id');
+    }
+    public function kategori_bangunan()
+    {
+        return $this->belongsTo(KategoriBangunan::class, 'kategori_bangunan_id', 'id');
     }
 }
