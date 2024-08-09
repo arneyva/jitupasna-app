@@ -1,7 +1,8 @@
 <div id="sidebar" class='active'>
     <div class="sidebar-wrapper active">
-        <div class="sidebar-header">
-            <img src="{{ asset('frontend/dist/assets/images/logo.svg') }}" alt="" srcset="">
+        <div class="sidebar-header" style="display: flex; align-items: center;">
+            <img src="{{ asset('bpbdsolo.png') }}" alt="" srcset="" style="margin-right: 10px;">
+            <span style="font-size:smaller;">JITUPASNA</span>
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
@@ -22,7 +23,7 @@
                             <a href="{{ route('bencana.index') }}">Bencana</a>
                         </li>
                         <li>
-                            <a href="component-alert.html">Kerusakan</a>
+                            <a href="{{ route('kerusakan.index') }}">Kerusakan</a>
                         </li>
                         <li>
                             <a href="component-alert.html">Kerugian</a>
