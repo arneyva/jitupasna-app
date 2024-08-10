@@ -6,7 +6,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data Kejadian Bencana</h4>
-                    <a href="{{ route('bencana.create') }}" class="btn btn-secondary">Tambah Data Bencana</a>
+                    <div>
+                        <button class="btn btn-danger">Filter</button>
+                        <a href="{{ route('bencana.create') }}" class="btn btn-secondary">Tambah Data Bencana</a>
+                    </div>
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
@@ -88,7 +91,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
+                            {{ $bencana->links() }}
+                        </div>
                     </div>
+                    {{-- {{ $bencana->links() }} --}}
                 </div>
             </div>
         </div>

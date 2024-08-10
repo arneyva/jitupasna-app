@@ -14,7 +14,7 @@ class BencanaController extends Controller
      */
     public function index()
     {
-        $bencana = Bencana::query()->latest()->get();
+        $bencana = Bencana::query()->latest()->paginate('3');
 
         return view('bencana.index', [
             'bencana' => $bencana,
