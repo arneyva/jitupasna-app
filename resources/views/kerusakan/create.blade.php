@@ -14,7 +14,10 @@
                         @csrf
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title mb-0">Tambah Data Kerusakan</h4>
-                            <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                            <div>
+                                <button class="btn btn-danger">Petunjuk Penggunaan</button>
+                                <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
