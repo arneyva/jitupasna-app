@@ -15,7 +15,11 @@ class KerugianController extends Controller
      */
     public function index()
     {
-        //
+        $kerugian = Kerugian::query()->with(['bencana'])->latest()->get();
+
+        return view('kerugian.index', [
+            'kerugian' => $kerugian,
+        ]);
     }
 
     /**

@@ -19,7 +19,12 @@ class Kerugian extends Model
         'satuan',
         'kuantitas',
         'deskripsi',
+        'BiayaKeseluruhan',
     ];
 
     protected $dates = ['deleted_at'];
+    public function bencana()
+    {
+        return $this->belongsTo(Bencana::class, 'bencana_id', 'id');
+    }
 }
