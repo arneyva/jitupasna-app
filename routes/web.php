@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BencanaController;
+use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,9 @@ Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
     Route::get('list', [KerusakanController::class, 'index'])->name('index');
     Route::get('create/{id}', [KerusakanController::class, 'create'])->name('create');
     Route::post('store/{id}', [KerusakanController::class, 'store'])->name('store');
+});
+Route::prefix('/kerugian')->name('kerugian.')->group(function () {
+    Route::get('list', [KerugianController::class, 'index'])->name('index');
+    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
+    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
 });

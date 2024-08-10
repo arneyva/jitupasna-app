@@ -5,30 +5,28 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Data Kejadian Bencana</h4>
-                    <a href="{{ route('bencana.create') }}" class="btn btn-secondary">Tambah Data Bencana</a>
+                    <h4 class="card-title mb-0">Data Kerusakan Dampak Bencana</h4>
+                    {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Ref</th>
-                                    <th>Kategori</th>
-                                    <th>Lokasi</th>
-                                    <th>Tanggal Mulai</th>
-                                    <th>Tanggal Berakhir</th>
+                                    <th>Bencana Ref</th>
+                                    <th>Kategori Bagunan</th>
+                                    <th>Kuantitas</th>
+                                    <th>Estimasi Biaya Total</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($bencana as $item)
+                                @foreach ($kerusakan as $item)
                                     <tr>
-                                        <td>{{ $item->Ref }}</td>
-                                        <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td>
-                                        <td>{{ $item->lokasi }}</td>
-                                        <td class="text-bold-500">{{ $item->tgl_mulai }}</td>
-                                        <td>{{ $item->tgl_selesai }}</td>
+                                        <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
+                                        <td>{{ $item->kategori_bangunan->nama }}</td>
+                                        <td class="text-bold-500">{{ $item->kuantitas }}</td>
+                                        <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
                                         <td>
                                             <div class="btn-group mb-1">
                                                 <div class="dropdown dropdown-color-icon">
@@ -52,25 +50,6 @@
                                                             </svg>
                                                             Update Data
                                                         </a>
-                                                        <a href="{{ route('kerusakan.create', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="2em"
-                                                                height="2em" viewBox="0 0 512 512">
-                                                                <path fill="#5A8DEE"
-                                                                    d="M87.195 53.838v79.494h44.213V53.838zm344.291 89.422q.51 10.83 1.014 21.662l27.861 41.004l-46.379 17.504l9.409 16.57l-24.334 32.486h86.273V143.26zm-387.562 2.303v124.619H266.61l5.389-54.61l-63.18-17.166l21.7-38.656l-9.46-14.188zm6.709 134.802v201.711h53.316V321.408h96.614v160.668h271.152v-201.71h-83.766l-34.537 13.61l-23.178 30.768l-34.505-29.69l-26.827-14.689z" />
-                                                            </svg>
-                                                            Kerusakan
-                                                        </a>
-                                                        <a href="{{ route('kerugian.create', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem"
-                                                                height="1.5rem" viewBox="0 0 14 14">
-                                                                <path fill="#5A8DEE" fill-rule="evenodd"
-                                                                    d="M1.315.606a.75.75 0 0 1 .99-.38l8.591 3.828l.361-.795a.75.75 0 0 1 1.386.05l.8 2.16a.75.75 0 0 1-.438.963l-2.15.81a.75.75 0 0 1-.948-1.013l.368-.81l-8.58-3.822a.75.75 0 0 1-.38-.99ZM1.25 5.5a1 1 0 0 0-1 1v7a.5.5 0 0 0 .5.5h2.5a.5.5 0 0 0 .5-.5v-7a1 1 0 0 0-1-1zm4.293 1.793A1 1 0 0 1 6.25 7h1.5a1 1 0 0 1 1 1v5.5a.5.5 0 0 1-.5.5h-2.5a.5.5 0 0 1-.5-.5V8a1 1 0 0 1 .293-.707M11.25 8.5a1 1 0 0 0-1 1v4a.5.5 0 0 0 .5.5h2.5a.5.5 0 0 0 .5-.5v-4a1 1 0 0 0-1-1z"
-                                                                    clip-rule="evenodd" />
-                                                            </svg>
-                                                            Kerugian
-                                                        </a>
                                                         <a href="{{ route('bencana.show', $item->id) }}"
                                                             class="dropdown-item">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="2rem"
@@ -83,7 +62,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
