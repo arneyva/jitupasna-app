@@ -26,7 +26,7 @@
                             <a href="{{ route('kerusakan.index') }}">Kerusakan</a>
                         </li>
                         <li>
-                            <a href="component-alert.html">Kerugian</a>
+                            <a href="{{ route('kerugian.index') }}">Kerugian</a>
                         </li>
                     </ul>
                 </li>

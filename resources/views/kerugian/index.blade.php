@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Data Kerusakan Dampak Bencana</h4>
+                    <h4 class="card-title mb-0">Data kerugian Akibat Bencana</h4>
                     {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
                 </div>
                 <div class="card-content">
@@ -14,18 +14,26 @@
                             <thead>
                                 <tr>
                                     <th>Bencana Ref</th>
-                                    <th>Kategori Bagunan</th>
-                                    <th>Kuantitas</th>
-                                    <th>Estimasi Biaya Total</th>
+                                    <th>Sektor Terdampak</th>
+                                    <th>Jumlah Terdampak</th>
+                                    <th>Estimasi Nilai Ekonomi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kerusakan as $item)
+                                @foreach ($kerugian as $item)
                                     <tr>
                                         <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
-                                        <td>{{ $item->kategori_bangunan->nama }}</td>
-                                        <td class="text-bold-500">{{ $item->kuantitas }}</td>
+                                        <td>
+                                            @if ($item->tipe == 1)
+                                                <h6>Pariwisata</h6>
+                                            @elseif ($item->tipe == 2)
+                                                <h6>Pertanian</h6>
+                                            @elseif ($item->tipe == 3)
+                                                <h6>Transportasi</h6>
+                                            @endif
+                                        </td>
+                                        <td class="text-bold-500">{{ $item->kuantitas }} {{ $item->satuan }}</td>
                                         <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
                                         <td>
                                             <div class="btn-group mb-1">
