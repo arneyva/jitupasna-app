@@ -15,4 +15,9 @@ class DetailKerusakan extends Model
     protected $fillable = ['kerusakan_id', 'tipe', 'nama', 'kuantitas', 'satuan', 'harga'];
 
     protected $dates = ['deleted_at'];
+
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class, 'satuan_id', 'id');
+    }
 }

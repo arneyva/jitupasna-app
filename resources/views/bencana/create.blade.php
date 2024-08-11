@@ -24,8 +24,7 @@
                                                 <select class="choices form-select" name="kategori_bencana_id">
                                                     <option selected disabled value="">{{ __('Pilih...') }}</option>
                                                     @foreach ($kategoribencana as $item)
-                                                        <option value="{{ $item->id }}"
-                                                            {{ old('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
+                                                        <option value="{{ $item->id }}">
                                                             {{ $item->nama }}
                                                         </option>
                                                     @endforeach
