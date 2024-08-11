@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BencanaController;
+use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use Illuminate\Support\Facades\Route;
@@ -40,9 +41,9 @@ Route::prefix('/kategori-bangunan')->name('kategori-bangunan.')->group(function 
     Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
 });
 Route::prefix('/kategori-bencana')->name('kategori-bencana.')->group(function () {
-    Route::get('list', [KerugianController::class, 'index'])->name('index');
-    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
-    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+    Route::get('list', [KategoriBencanaController::class, 'index'])->name('index');
+    // Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
+    Route::post('store', [KategoriBencanaController::class, 'store'])->name('store');
 });
 Route::prefix('/satuan')->name('satuan.')->group(function () {
     Route::get('list', [KerugianController::class, 'index'])->name('index');
