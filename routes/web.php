@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BencanaController;
+use App\Http\Controllers\KategoriBangunanController;
 use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
@@ -37,9 +38,9 @@ Route::prefix('/kerugian')->name('kerugian.')->group(function () {
     Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
 });
 Route::prefix('/kategori-bangunan')->name('kategori-bangunan.')->group(function () {
-    Route::get('list', [KerugianController::class, 'index'])->name('index');
-    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
-    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+    Route::get('list', [KategoriBangunanController::class, 'index'])->name('index');
+    Route::post('store', [KategoriBangunanController::class, 'store'])->name('store');
+    Route::patch('update/{id}', [KategoriBangunanController::class, 'update'])->name('update');
 });
 Route::prefix('/kategori-bencana')->name('kategori-bencana.')->group(function () {
     Route::get('list', [KategoriBencanaController::class, 'index'])->name('index');

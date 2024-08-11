@@ -6,6 +6,7 @@ use App\Models\Bencana;
 use App\Models\DetailKerusakan;
 use App\Models\KategoriBangunan;
 use App\Models\Kerusakan;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,7 @@ class KerusakanController extends Controller
      */
     public function index()
     {
-        $kerusakan = Kerusakan::query()->with(['bencana', 'kategori_bangunan'])->latest()->get();
+        $kerusakan = Kerusakan::query()->with(['bencana', 'kategori_bangunan','detail.satuan'])->latest()->get();
 
         return view('kerusakan.index', [
             'kerusakan' => $kerusakan,
@@ -30,11 +31,13 @@ class KerusakanController extends Controller
     {
         $bencana = Bencana::where('id', $id)->first();
         $kategoriBangunan = KategoriBangunan::query()->get();
+        $satuan = Satuan::query()->get();
 
         // dd($kategoriBangunan);
         return view('kerusakan.create', [
             'kategoribangunan' => $kategoriBangunan,
             'bencana' => $bencana,
+            'satuan' => $satuan
         ]);
     }
 
@@ -69,7 +72,7 @@ class KerusakanController extends Controller
                     'tipe' => $detail['tipe'],
                     'nama' => $detail['nama'],
                     'kuantitas' => $detail['kuantitas'],
-                    'satuan' => $detail['satuan'],
+                    'satuan_id' => $detail['satuan_id'],
                     'harga' => $detail['harga'],
                     'created_at' => now(),
                 ];
@@ -82,7 +85,7 @@ class KerusakanController extends Controller
             $kerusakan->save();
             DB::commit();
 
-            return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
+            return redirect()->route('kerusakan.index')->with('success', 'Sale created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
