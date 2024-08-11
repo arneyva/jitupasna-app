@@ -34,3 +34,18 @@ Route::prefix('/kerugian')->name('kerugian.')->group(function () {
     Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
     Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
 });
+Route::prefix('/kategori-bangunan')->name('kategori-bangunan.')->group(function () {
+    Route::get('list', [KerugianController::class, 'index'])->name('index');
+    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
+    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+});
+Route::prefix('/kategori-bencana')->name('kategori-bencana.')->group(function () {
+    Route::get('list', [KerugianController::class, 'index'])->name('index');
+    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
+    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+});
+Route::prefix('/satuan')->name('satuan.')->group(function () {
+    Route::get('list', [KerugianController::class, 'index'])->name('index');
+    Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
+    Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+});

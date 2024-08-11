@@ -65,6 +65,7 @@ class KerugianController extends Controller
 
             // Loop melalui setiap detail kerugian yang ada
             foreach ($request->details as $detail) {
+                $biayaKeseluruhan = $detail['kuantitas'] * $detail['nilai_ekonomi'];
                 // Buat record kerugian baru di database
                 Kerugian::create([
                     'bencana_id' => $bencana_id,
@@ -74,6 +75,8 @@ class KerugianController extends Controller
                     'kuantitas' => $detail['kuantitas'],
                     'deskripsi' => $detail['deskripsi'] ?? null,
                     'created_at' => now(),
+                    'BiayaKeseluruhan' => $biayaKeseluruhan,
+
                 ]);
             }
             DB::commit();
