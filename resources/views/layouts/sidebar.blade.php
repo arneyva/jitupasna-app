@@ -13,7 +13,7 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item  has-sub">
+                <li class="sidebar-item has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i>
                         <span>Jitupasna</span>
@@ -27,6 +27,23 @@
                         </li>
                         <li>
                             <a href="{{ route('kerugian.index') }}">Kerugian</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i data-feather="layers" width="20"></i>
+                        <span>Kategori</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="{{ route('kategori-bangunan.index') }}">Bangunan</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('kategori-bencana.index') }}">Bencana</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('satuan.index') }}">Satuan</a>
                         </li>
                     </ul>
                 </li>
