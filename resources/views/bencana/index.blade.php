@@ -17,7 +17,7 @@
                             <thead>
                                 <tr>
                                     <th>Ref</th>
-                                    <th>Kategori</th>
+                                    <th>Bencana</th>
                                     <th>Lokasi</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Tanggal Berakhir</th>
