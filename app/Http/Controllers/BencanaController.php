@@ -12,12 +12,17 @@ class BencanaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bencana = Bencana::query()->latest()->paginate('3');
-
+        $kategoriBencana = KategoriBencana::query()->get();
+        $bencanaQuery = Bencana::query()->latest();
+        if ($request->filled('kategori_bencana_id')) {
+            $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
+        }
+        $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('bencana.index', [
             'bencana' => $bencana,
+            'kategoribencana' => $kategoriBencana,
         ]);
     }
 
