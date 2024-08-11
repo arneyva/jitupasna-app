@@ -35,20 +35,24 @@ class BencanaController extends Controller
 
     public function getRef()
     {
-
+        // Ambil data terakhir dari tabel bencana
         $last = DB::table('bencana')->latest('id')->first();
 
         if ($last) {
+            // Ambil referensi terakhir
             $item = $last->Ref;
-            $nwMsg = explode('_', $item);
-            $inMsg = $nwMsg[1] + 1;
-            $code = $nwMsg[0].'_'.$inMsg;
+            // Konversi nomor terakhir menjadi integer dan tambahkan 1
+            $nextNumber = intval($item) + 1;
+            // Format nomor dengan nol di depan, menjadi tiga digit
+            $code = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
         } else {
-            $code = 'DISASTER_1';
+            // Jika tidak ada data, mulai dari 001
+            $code = '001';
         }
 
         return $code;
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -80,7 +84,7 @@ class BencanaController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: '.$th->getMessage());
+            \Log::error('Error storing bencana: ' . $th->getMessage());
 
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
@@ -111,18 +115,23 @@ class BencanaController extends Controller
 
         // Hitung total jumlah kuantitas (bangunan rusak)
         $totalKuantitas = $bencana->kerusakan->sum('kuantitas');
+        $totalBiayaPerbaikan = $bencana->kerusakan->sum('BiayaKeseluruhan');
+        $totalKerugian = $bencana->kerugian->sum('BiayaKeseluruhan');
+        $kebutuhan = $totalBiayaPerbaikan + $totalKerugian;
 
-        // Hitung estimasi total biaya perbaikan dari DetailKerusakan
-        $totalBiayaPerbaikan = $bencana->kerusakan->sum(function ($kerusakan) {
-            return $kerusakan->detail->sum(function ($detail) {
-                return $detail->kuantitas * $detail->harga;
-            });
-        });
+        // // Hitung estimasi total biaya perbaikan dari DetailKerusakan
+        // $totalBiayaPerbaikan = $bencana->kerusakan->sum(function ($kerusakan) {
+        //     return $kerusakan->detail->sum(function ($detail) {
+        //         return $detail->kuantitas * $detail->harga ;
+        //     });
+        // });
 
         return view('bencana.show', [
             'bencana' => $bencana,
             'totalKuantitas' => $totalKuantitas,
             'totalBiayaPerbaikan' => $totalBiayaPerbaikan,
+            'totalKerugian' => $totalKerugian,
+            'kebutuhan' => $kebutuhan,
         ]);
     }
 

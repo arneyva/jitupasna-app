@@ -52,7 +52,7 @@
                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" readonly> {{ $bencana->deskripsi }}</textarea>
                                 </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="first-name-column">Jumlah Bangunan Rusak</label>
@@ -68,7 +68,28 @@
                                             value="{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }}">
                                     </div>
                                 </div>
+                            </div> --}}
+                            <div class="col-md-6 col-lg-6">
+                                <div class="card">
+                                    <table class="table mb-0 mt-1" role="grid">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{ __('Kerusakan') }}</th>
+                                                <td>{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }} ~ {{ $totalKuantitas }} Bangunan</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ __('Kerugian') }}</th>
+                                                <td>{{ 'Rp ' . number_format($totalKerugian, 2, ',', '.') }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ __('Kebutuhan') }}</th>
+                                                <td>{{ 'Rp ' . number_format($kebutuhan, 2, ',', '.') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
