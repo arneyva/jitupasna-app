@@ -14,7 +14,7 @@ class KategoriBencanaController extends Controller
      */
     public function index()
     {
-        $kategoriBencana = KategoriBencana::query()->get();
+        $kategoriBencana = KategoriBencana::query()->where('deleted_at', null)->latest()->get();
         return view('kategori-bencana.index', [
             'kategoriBencana' => $kategoriBencana
         ]);
@@ -76,7 +76,26 @@ class KategoriBencanaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $validated = $request->validate([
+                'nama' => [
+                    'required',
+                    Rule::unique(KategoriBencana::class, 'nama')->whereNull('deleted_at')->ignore($id),
+                ],
+                'deskripsi' => [
+                    'nullable'
+                ]
+            ]);
+            $kategoriBencana = KategoriBencana::where('id', $id)->update([
+                'nama' => $validated['nama'],
+                'deskripsi' => $validated['deskripsi'],
+            ]);
+            DB::commit();
+            return redirect()->route('kategori-bencana.index')->with('success', 'Kategori Bencana Sukses Diperbarui');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
     }
 
     /**

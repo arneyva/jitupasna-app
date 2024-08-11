@@ -44,6 +44,7 @@ Route::prefix('/kategori-bencana')->name('kategori-bencana.')->group(function ()
     Route::get('list', [KategoriBencanaController::class, 'index'])->name('index');
     // Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
     Route::post('store', [KategoriBencanaController::class, 'store'])->name('store');
+    Route::patch('update/{id}', [KategoriBencanaController::class, 'update'])->name('update');
 });
 Route::prefix('/satuan')->name('satuan.')->group(function () {
     Route::get('list', [KerugianController::class, 'index'])->name('index');
