@@ -14,7 +14,7 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        $satuan = Satuan::query()->where('deleted_at', null)->latest()->get();
+        $satuan = Satuan::query()->where('deleted_at', null)->latest()->paginate(5);
         return view('satuan.index', [
             'satuan' => $satuan
         ]);
@@ -51,6 +51,7 @@ class SatuanController extends Controller
             DB::commit();
             return redirect()->route('satuan.index')->with('success', 'Satuan Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -94,6 +95,7 @@ class SatuanController extends Controller
             DB::commit();
             return redirect()->route('satuan.index')->with('success', 'Satuan Sukses Diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }

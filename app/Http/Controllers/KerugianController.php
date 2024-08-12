@@ -19,10 +19,6 @@ class KerugianController extends Controller
     {
         // $kategoriBangunan = KategoriBangunan::query()->get();
         $kerugian = Kerugian::query()->with(['bencana'])->latest()->paginate(5);
-        // if ($request->filled('kategori_bangunan_id')) {
-        //     $kerugianQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
-        // }
-        // $kerugian = $kerugianQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kerugian.index', [
             'kerugian' => $kerugian,
         ]);
@@ -92,6 +88,7 @@ class KerugianController extends Controller
             // Redirect ke halaman yang sesuai setelah penyimpanan sukses
             return redirect()->route('kerugian.index')->with('success', 'Data kerugian berhasil disimpan.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -124,30 +121,37 @@ class KerugianController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validasi input
-        $request->validate([
-            'tipe' => 'nullable',
-            'nilai_ekonomi' => 'nullable',
-            'satuan_id' => 'required',
-            'kuantitas' => 'nullable',
-            'deskripsi' => 'nullable',
-        ]);
+        try {
+            DB::beginTransaction();
+            // Validasi input
+            $request->validate([
+                'tipe' => 'nullable',
+                'nilai_ekonomi' => 'nullable',
+                'satuan_id' => 'required',
+                'kuantitas' => 'nullable',
+                'deskripsi' => 'nullable',
+            ]);
 
-        // Temukan model Kerugian berdasarkan id
-        $kerugian = Kerugian::findOrFail($id);
+            // Temukan model Kerugian berdasarkan id
+            $kerugian = Kerugian::findOrFail($id);
 
-        // Perbarui data Kerugian
-        $kerugian->tipe = $request->input('tipe');
-        $kerugian->nilai_ekonomi = $request->input('nilai_ekonomi');
-        $kerugian->satuan_id = $request->input('satuan_id');
-        $kerugian->kuantitas = $request->input('kuantitas');
-        $kerugian->deskripsi = $request->input('deskripsi');
-        $biayaKeseluruhan = $request->input('kuantitas') * $request->input('nilai_ekonomi');
-        $kerugian->BiayaKeseluruhan = $biayaKeseluruhan;
-        $kerugian->save();
+            // Perbarui data Kerugian
+            $kerugian->tipe = $request->input('tipe');
+            $kerugian->nilai_ekonomi = $request->input('nilai_ekonomi');
+            $kerugian->satuan_id = $request->input('satuan_id');
+            $kerugian->kuantitas = $request->input('kuantitas');
+            $kerugian->deskripsi = $request->input('deskripsi');
+            $biayaKeseluruhan = $request->input('kuantitas') * $request->input('nilai_ekonomi');
+            $kerugian->BiayaKeseluruhan = $biayaKeseluruhan;
+            $kerugian->save();
+            DB::commit();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('kerugian.index')->with('success', 'Data kerugian berhasil diperbarui');
+            // Redirect dengan pesan sukses
+            return redirect()->route('kerugian.index')->with('success', 'Data kerugian berhasil diperbarui');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
     }
 
 

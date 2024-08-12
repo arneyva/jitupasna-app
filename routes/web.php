@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BencanaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriBangunanController;
 use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
@@ -9,9 +10,10 @@ use App\Http\Controllers\SatuanController;
 use App\Models\Kerugian;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('layouts.example');
-});
+// Route::get('/', function () {
+//     return view('layouts.dashboard');
+// });
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/create', function () {
     return view('create');
 });

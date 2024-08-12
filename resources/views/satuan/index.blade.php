@@ -7,7 +7,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data Satuan</h4>
                     <div>
-                        <button class="btn btn-danger">Filter</button>
+                        {{-- <button class="btn btn-danger">Filter</button> --}}
                         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#inlineForm">
                             Tambah Data
                         </button>
@@ -84,7 +84,7 @@
                             </tbody>
                         </table>
                         <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{-- {{ $bencana->links() }} --}}
+                            {{ $satuan->links() }}
                         </div>
                     </div>
                 </div>

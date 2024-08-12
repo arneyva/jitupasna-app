@@ -12,9 +12,13 @@ class KategoriBangunanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $KategoriBangunan = KategoriBangunan::query()->where('deleted_at', null)->latest()->get();
+        $KategoriBangunanQuery = KategoriBangunan::query()->where('deleted_at', null)->latest();
+        if ($request->filled('nama')) {
+            $KategoriBangunanQuery->where('nama', 'like', '%' . $request->input('nama') . '%');
+        }
+        $KategoriBangunan = $KategoriBangunanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kategori-bangunan.index', [
             'KategoriBangunan' => $KategoriBangunan
         ]);
@@ -51,6 +55,7 @@ class KategoriBangunanController extends Controller
             DB::commit();
             return redirect()->route('kategori-bangunan.index')->with('success', 'Kategori Bencana Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -94,6 +99,7 @@ class KategoriBangunanController extends Controller
             DB::commit();
             return redirect()->route('kategori-bangunan.index')->with('success', 'Kategori Bencana Sukses Diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
