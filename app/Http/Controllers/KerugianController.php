@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bencana;
+use App\Models\KategoriBangunan;
 use App\Models\Kerugian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,10 +14,14 @@ class KerugianController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kerugian = Kerugian::query()->with(['bencana'])->latest()->get();
-
+        // $kategoriBangunan = KategoriBangunan::query()->get();
+        $kerugianQuery = Kerugian::query()->with(['bencana'])->latest()->get();
+        if ($request->filled('kategori_bangunan_id')) {
+            $kerugianQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
+        }
+        $kerugian = $kerugianQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kerugian.index', [
             'kerugian' => $kerugian,
         ]);

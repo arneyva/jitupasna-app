@@ -7,6 +7,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data Kerusakan Dampak Bencana</h4>
                     {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
+                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#inlineForm">Filter</button>
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
@@ -66,6 +67,47 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
+                            {{ $kerusakan->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel33">Form Kategori Bencana</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i data-feather="x"></i>
+                            </button>
+                        </div>
+                        <form action="{{ route('kerusakan.index') }}" method="Get">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="first-name-column">Kategori Bangunan</label>
+                                    <div class="form-group">
+                                        <select class="form-select" name="kategori_bangunan_id">
+                                            <option selected disabled value="">{{ __('Pilih...') }}</option>
+                                            @foreach ($kategoribangunan as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ request()->input('kategori_bangunan_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Close</span>
+                                </button>
+                                <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
