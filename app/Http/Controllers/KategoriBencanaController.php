@@ -12,9 +12,13 @@ class KategoriBencanaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kategoriBencana = KategoriBencana::query()->where('deleted_at', null)->latest()->get();
+        $kategoriBencanaQuery = KategoriBencana::query()->where('deleted_at', null)->latest();
+        if ($request->filled('nama')) {
+            $kategoriBencanaQuery->where('nama', 'like', '%' . $request->input('nama') . '%');
+        }
+        $kategoriBencana = $kategoriBencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kategori-bencana.index', [
             'kategoriBencana' => $kategoriBencana
         ]);

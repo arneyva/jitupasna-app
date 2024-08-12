@@ -56,34 +56,36 @@ class KerusakanController extends Controller
         try {
             DB::beginTransaction();
             $kerusakanRules = $request->validate([
-                'kategori_bangunan_id' => 'required',
-                'kuantitas' => 'required',
-                'deskripsi' => 'required',
+                'kategori_bangunan_id' => 'nullable',
+                'kuantitas' => 'nullable',
+                'deskripsi' => 'nullable',
             ]);
             $kerusakan = new Kerusakan;
             $kerusakan->bencana_id = $bencana->id;
             $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
-            $kerusakan->kuantitas = $kerusakanRules['kuantitas'];
+            $kerusakan->kuantitas = $kerusakanRules['kuantitas'] ?? 1;
             $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
             $kerusakan->save();
             // simpan detail kerusakan
             $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
-                $subtotal = $detail['kuantitas'] * $detail['harga'] * $detail['kuantitas_item'];
+                $kuantitasItem = $detail['kuantitas_item'] ?? 1;
+                $subtotal = $detail['kuantitas'] * $detail['harga'] *  $kuantitasItem;
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
                     'tipe' => $detail['tipe'],
                     'nama' => $detail['nama'],
                     'kuantitas' => $detail['kuantitas'],
-                    'kuantitas_item' => $detail['kuantitas_item'] ?? 1,
+                    'kuantitas_item' => $kuantitasItem,
                     'satuan_id' => $detail['satuan_id'],
                     'harga' => $detail['harga'],
                     'created_at' => now(),
                 ];
             }
-            $GrandTotal = $biayaKeseluruhan * $kerusakanRules['kuantitas'];
+            // dd($biayaKeseluruhan);
+            $GrandTotal = $biayaKeseluruhan * ($kerusakanRules['kuantitas'] ?? 1);
             // dd($request->all());
             DetailKerusakan::insert($details_kerusakan); //memasukan data ke database
             // Perbarui kerusakan dengan total biaya keseluruhan

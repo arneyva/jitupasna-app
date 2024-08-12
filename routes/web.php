@@ -24,7 +24,7 @@ Route::prefix('/bencana')->name('bencana.')->group(function () {
     Route::post('store', [BencanaController::class, 'store'])->name('store');
     Route::get('detail/{id}', [BencanaController::class, 'show'])->name('show');
     Route::get('edit/{id}', [BencanaController::class, 'edit'])->name('edit');
-    Route::post('update/{id}', [BencanaController::class, 'update'])->name('update');
+    Route::patch('update/{id}', [BencanaController::class, 'update'])->name('update');
     Route::get('destroy/{id}', [BencanaController::class, 'destroy'])->name('destroy');
 });
 Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
