@@ -94,26 +94,6 @@ class BencanaController extends Controller
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    // public function show(string $id)
-    // {
-    //     $bencana = Bencana::query()->where('id', $id)->with(['kerusakan'])->first();
-    //     // Hitung total jumlah bangunan rusak (kuantitas)
-    //     $totalKuantitas = $bencana->kerusakan->sum('kuantitas');
-
-    //     // Hitung estimasi biaya perbaikan
-    //     $totalBiayaPerbaikan = $bencana->kerusakan->detail->sum(function ($kerusakan) {
-    //         return $kerusakan->kuantitas * $kerusakan->harga;
-    //     });
-    //     return view('bencana.show', [
-    //         'bencana' => $bencana,
-    //         'totalKuantitas' => $totalKuantitas,
-    //         'totalBiayaPerbaikan' => $totalBiayaPerbaikan,
-    //     ]);
-    // }
     public function show(string $id)
     {
         $bencana = Bencana::with(['kerusakan.detail'])->findOrFail($id);
@@ -123,13 +103,6 @@ class BencanaController extends Controller
         $totalBiayaPerbaikan = $bencana->kerusakan->sum('BiayaKeseluruhan');
         $totalKerugian = $bencana->kerugian->sum('BiayaKeseluruhan');
         $kebutuhan = $totalBiayaPerbaikan + $totalKerugian;
-
-        // // Hitung estimasi total biaya perbaikan dari DetailKerusakan
-        // $totalBiayaPerbaikan = $bencana->kerusakan->sum(function ($kerusakan) {
-        //     return $kerusakan->detail->sum(function ($detail) {
-        //         return $detail->kuantitas * $detail->harga ;
-        //     });
-        // });
 
         return view('bencana.show', [
             'bencana' => $bencana,

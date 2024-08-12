@@ -55,6 +55,7 @@ class KategoriBencanaController extends Controller
             DB::commit();
             return redirect()->route('kategori-bencana.index')->with('success', 'Kategori Bencana Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -98,6 +99,7 @@ class KategoriBencanaController extends Controller
             DB::commit();
             return redirect()->route('kategori-bencana.index')->with('success', 'Kategori Bencana Sukses Diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }

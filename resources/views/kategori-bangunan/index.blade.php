@@ -7,7 +7,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data Kategori Bangunan</h4>
                     <div>
-                        <button class="btn btn-danger">Filter</button>
+                        <button class="btn btn-danger" type="button" data-toggle="modal"
+                            data-target="#FormUntukUpdate">Filter</button>
                         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#inlineForm">
                             Tambah Data
                         </button>
@@ -84,7 +85,7 @@
                             </tbody>
                         </table>
                         <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{-- {{ $Bangunan->links() }} --}}
+                            {{ $KategoriBangunan->links() }}
                         </div>
                     </div>
                 </div>
@@ -122,7 +123,43 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade text-left" id="FormUntukUpdate" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel33" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel33">Filter</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i data-feather="x"></i>
+                                </button>
+                            </div>
+                            <form action="{{ route('kategori-bangunan.index') }}" method="GET" id="filterForm">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="first-name-column">Cari Kategori Bangunan</label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="nama" name="nama"
+                                                value="{{ request()->input('nama') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
+                                        data-dismiss="modal">{{ __('Reset') }}</button>
+                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
+<script>
+    function resetFilters() {
+        document.getElementById('nama').value = '';
+        // Submit formulir secara otomatis untuk menghapus filter
+        document.getElementById('filterForm').submit();
+    }
+</script>

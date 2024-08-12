@@ -96,7 +96,6 @@
                             {{ $bencana->links() }}
                         </div>
                     </div>
-                    {{-- {{ $bencana->links() }} --}}
                 </div>
                 <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel33" aria-hidden="true">
@@ -126,10 +125,6 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    {{-- <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Close</span>
-                                    </button> --}}
                                     <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
                                         data-dismiss="modal">{{ __('Reset') }}</button>
                                     <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>

@@ -15,7 +15,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title mb-0">Tambah Data Kerusakan</h4>
                             <div>
-                                <button class="btn btn-danger">Petunjuk Penggunaan</button>
+                                {{-- <button class="btn btn-danger">Petunjuk Penggunaan</button> --}}
                             </div>
                         </div>
                         <div class="card-content">

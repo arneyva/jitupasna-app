@@ -129,61 +129,64 @@ class KerusakanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
-        // Validasi input
-        $request->validate([
-            'kategori_bangunan_id' => 'required|exists:kategori_bangunan,id',
-            'deskripsi' => 'required|string',
-            'details.*.nama' => 'required|string',
-            'details.*.satuan_id' => 'required|exists:satuan,id',
-            'details.*.harga' => 'required|numeric',
-            'details.*.kuantitas' => 'required|numeric',
-            // Jika ada field lain yang perlu divalidasi, tambahkan di sini
-        ]);
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'kategori_bangunan_id' => 'required|exists:kategori_bangunan,id',
+                'deskripsi' => 'required|string',
+                'details.*.nama' => 'required|string',
+                'details.*.satuan_id' => 'required|exists:satuan,id',
+                'details.*.harga' => 'required|numeric',
+                'details.*.kuantitas' => 'required|numeric',
+                // Jika ada field lain yang perlu divalidasi, tambahkan di sini
+            ]);
 
-        // Dapatkan model kerusakan berdasarkan id
-        $kerusakan = Kerusakan::with('detail')->findOrFail($id);
+            // Dapatkan model kerusakan berdasarkan id
+            $kerusakan = Kerusakan::with('detail')->findOrFail($id);
 
-        // Perbarui data kerusakan
-        $kerusakan->kategori_bangunan_id = $request->kategori_bangunan_id;
-        $kerusakan->deskripsi = $request->deskripsi;
-        $kerusakan->save();
-        // simpan detail kerusakan
-        $biayaKeseluruhan = 0;
-        // Perbarui detail kerusakan
-        foreach ($request->details as $index => $detail) {
-            $kerusakanDetail = $kerusakan->detail()->find($detail['id']);
+            // Perbarui data kerusakan
+            $kerusakan->kategori_bangunan_id = $request->kategori_bangunan_id;
+            $kerusakan->deskripsi = $request->deskripsi;
+            $kerusakan->save();
+            // simpan detail kerusakan
+            $biayaKeseluruhan = 0;
+            // Perbarui detail kerusakan
+            foreach ($request->details as $index => $detail) {
+                $kerusakanDetail = $kerusakan->detail()->find($detail['id']);
 
-            // Jika detail ditemukan, perbarui detail tersebut
-            if ($kerusakanDetail) {
-                $kerusakanDetail->nama = $detail['nama'];
-                $kerusakanDetail->satuan_id = $detail['satuan_id'];
-                $kerusakanDetail->harga = $detail['harga'];
-                $kerusakanDetail->kuantitas = $detail['kuantitas'];
+                // Jika detail ditemukan, perbarui detail tersebut
+                if ($kerusakanDetail) {
+                    $kerusakanDetail->nama = $detail['nama'];
+                    $kerusakanDetail->satuan_id = $detail['satuan_id'];
+                    $kerusakanDetail->harga = $detail['harga'];
+                    $kerusakanDetail->kuantitas = $detail['kuantitas'];
 
 
-                // Update fields based on 'tipe'
-                if ($kerusakanDetail->tipe == 2) {
-                    // $kerusakanDetail->kuantitas = $detail['kuantitas'];
-                    $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
-                    // $kerusakanDetail->harga = $detail['harga'];
-                } elseif ($kerusakanDetail->tipe == 3) {
-                    // $kerusakanDetail->kuantitas = $detail['jumlah_alat'];
-                    // $kerusakanDetail->kuantitas_item = $detail['jumlah_kuantitas'];
-                    $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
+                    // Update fields based on 'tipe'
+                    if ($kerusakanDetail->tipe == 2) {
+                        // $kerusakanDetail->kuantitas = $detail['kuantitas'];
+                        $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
+                        // $kerusakanDetail->harga = $detail['harga'];
+                    } elseif ($kerusakanDetail->tipe == 3) {
+                        // $kerusakanDetail->kuantitas = $detail['jumlah_alat'];
+                        // $kerusakanDetail->kuantitas_item = $detail['jumlah_kuantitas'];
+                        $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
+                    }
+
+                    $kerusakanDetail->save();
+                    // Hitung subtotal
+                    $subtotal = $detail['kuantitas'] * $detail['harga'] * ($detail['kuantitas_item'] ?? 1);
+                    $biayaKeseluruhan += $subtotal;
                 }
-
-                $kerusakanDetail->save();
-                // Hitung subtotal
-                $subtotal = $detail['kuantitas'] * $detail['harga'] * ($detail['kuantitas_item'] ?? 1);
-                $biayaKeseluruhan += $subtotal;
             }
+            // Perbarui kerusakan dengan total biaya keseluruhan
+            $kerusakan->BiayaKeseluruhan = $biayaKeseluruhan;
+            $kerusakan->save();
+            DB::commit();
+            return redirect()->route('kerusakan.index')->with('success', 'Data kerusakan berhasil diperbarui');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         }
-        // Perbarui kerusakan dengan total biaya keseluruhan
-        $kerusakan->BiayaKeseluruhan = $biayaKeseluruhan;
-        $kerusakan->save();
-
-        return redirect()->route('kerusakan.index')->with('success', 'Data kerusakan berhasil diperbarui');
     }
 
 
