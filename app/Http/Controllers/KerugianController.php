@@ -17,11 +17,11 @@ class KerugianController extends Controller
     public function index(Request $request)
     {
         // $kategoriBangunan = KategoriBangunan::query()->get();
-        $kerugianQuery = Kerugian::query()->with(['bencana'])->latest()->get();
-        if ($request->filled('kategori_bangunan_id')) {
-            $kerugianQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
-        }
-        $kerugian = $kerugianQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+        $kerugian = Kerugian::query()->with(['bencana'])->get();
+        // if ($request->filled('kategori_bangunan_id')) {
+        //     $kerugianQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
+        // }
+        // $kerugian = $kerugianQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kerugian.index', [
             'kerugian' => $kerugian,
         ]);

@@ -12,7 +12,7 @@ class DetailKerusakan extends Model
 
     protected $table = 'detail_kerusakan';
 
-    protected $fillable = ['kerusakan_id', 'tipe', 'nama', 'kuantitas', 'satuan', 'harga'];
+    protected $fillable = ['kerusakan_id', 'tipe', 'nama', 'kuantitas', 'satuan', 'harga', 'kuantitas_item'];
 
     protected $dates = ['deleted_at'];
 
