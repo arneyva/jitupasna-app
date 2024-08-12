@@ -16,7 +16,7 @@ class Kerugian extends Model
         'bencana_id',
         'tipe',
         'nilai_ekonomi',
-        'satuan',
+        'satuan_id',
         'kuantitas',
         'deskripsi',
         'BiayaKeseluruhan',

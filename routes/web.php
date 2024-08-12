@@ -31,6 +31,8 @@ Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
     Route::get('list', [KerusakanController::class, 'index'])->name('index');
     Route::get('create/{id}', [KerusakanController::class, 'create'])->name('create');
     Route::post('store/{id}', [KerusakanController::class, 'store'])->name('store');
+    Route::get('edit/{id}', [KerusakanController::class, 'edit'])->name('edit');
+    Route::patch('update/{id}', [KerusakanController::class, 'update'])->name('update');
 });
 Route::prefix('/kerugian')->name('kerugian.')->group(function () {
     Route::get('list', [KerugianController::class, 'index'])->name('index');

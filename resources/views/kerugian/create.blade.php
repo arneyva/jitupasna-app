@@ -9,16 +9,39 @@
         <div class="row match-height">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">Informasi Bencana</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Bencana Ref</th>
+                                    <th>Bencana</th>
+                                    <th>Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ $bencana->Ref }}</td>
+                                    <td>{{ $bencana->kategori_bencana->nama }}</td>
+                                    <td>{{ $bencana->lokasi }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
                     <form class="form" id="kerusakan-form" action="{{ route('kerugian.store', ['id' => $bencana->id]) }}"
                         method="POST">
                         @csrf
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title mb-0">Tambah Data Kerugian</h4>
-                            <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
+
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label for="first-name-column">Kategori Bencana</label>
@@ -40,10 +63,11 @@
                                                 name="lokasi" readonly value="{{ $jumlahHari }} Hari">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="button" id="add-detail-btn" class="btn btn-primary mr-1 mb-1">Tambah
                                         Detail</button>
+                                    <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
                                 </div>
                                 <div id="additional-details"></div>
                     </form>
@@ -64,7 +88,7 @@
             const newDetail = document.createElement('div');
             newDetail.classList.add('card');
             newDetail.innerHTML = `
-            <div class="card-content">
+            <div class="card-content"  style="border: 4px solid #ddd; margin-top: 10px">
             <div class="card-body">
             <div class="row">
                 <div class="col-md-3 col-12">
@@ -72,9 +96,9 @@
                         <label for="tipe-${detailCount}">Sektor yang Terkena Dampak</label>
                         <select class="choices form-select" name="details[${detailCount}][tipe]" id="tipe-${detailCount}">
                             <option selected disabled value="">{{ __('Pilih...') }}</option>
-                            <option value="1">Pariwisata</option>
+            
                             <option value="2">Pertanian</option>
-                            <option value="3">Transportasi</option>
+                         
                         </select>
                     </div>
                 </div>
@@ -87,7 +111,15 @@
                 <div class="col-md-3 col-12">
                     <div class="form-group">
                         <label for="satuan-${detailCount}">Satuan</label>
-                        <input type="text" id="satuan-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][satuan]">
+                       <select class="choices form-select" name="details[${detailCount}][satuan_id]"
+                        id="satuan_id-${detailCount}">
+                        <option selected disabled value="">{{ __('Pilih...') }}</option>
+                        @foreach ($satuan as $item)
+                            <option value="{{ $item->id }}">
+                                {{ $item->nama }}
+                            </option>
+                        @endforeach
+                    </select>
                     </div>
                 </div>
                 <div class="col-md-2 col-12">
@@ -120,7 +152,8 @@
 
             // Menambahkan elemen baru ke dalam div dengan id "additional-details"
             document.getElementById('additional-details').appendChild(newDetail);
-
+            new Choices(`#tipe-${detailCount}`);
+            new Choices(`#satuan_id-${detailCount}`);
             // Tambahkan event listener untuk menghapus baris ketika ikon diklik
             newDetail.querySelector('.delete-icon').addEventListener('click', function() {
                 newDetail.remove();

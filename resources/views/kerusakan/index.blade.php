@@ -37,7 +37,7 @@
                                                         Aksi
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonEmoji">
-                                                        <a href="{{ route('bencana.edit', $item->id) }}"
+                                                        <a href="{{ route('kerusakan.edit', $item->id) }}"
                                                             class="dropdown-item">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem"
                                                                 height="1.5rem" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
                                                             </svg>
                                                             Update Data
                                                         </a>
-                                                        <a href="{{ route('bencana.show', $item->id) }}"
+                                                        {{-- <a href="{{ route('bencana.show', $item->id) }}"
                                                             class="dropdown-item">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="2rem"
                                                                 height="2rem" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
                                                                     d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0" />
                                                             </svg>
                                                             Detail
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </div>
                                             </div>
