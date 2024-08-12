@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\SatuanController;
+use App\Models\Kerugian;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +39,8 @@ Route::prefix('/kerugian')->name('kerugian.')->group(function () {
     Route::get('list', [KerugianController::class, 'index'])->name('index');
     Route::get('create/{id}', [KerugianController::class, 'create'])->name('create');
     Route::post('store/{id}', [KerugianController::class, 'store'])->name('store');
+    Route::get('edit/{id}', [KerugianController::class, 'edit'])->name('edit');
+    Route::patch('update/{id}', [KerugianController::class, 'update'])->name('update');
 });
 Route::prefix('/kategori-bangunan')->name('kategori-bangunan.')->group(function () {
     Route::get('list', [KategoriBangunanController::class, 'index'])->name('index');
