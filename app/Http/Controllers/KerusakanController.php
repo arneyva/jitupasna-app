@@ -15,12 +15,17 @@ class KerusakanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kerusakan = Kerusakan::query()->with(['bencana', 'kategori_bangunan','detail.satuan'])->latest()->get();
-
+        $kategoriBangunan = KategoriBangunan::query()->get();
+        $kerusakanQuery = Kerusakan::query()->with(['bencana', 'kategori_bangunan', 'detail.satuan'])->latest();
+        if ($request->filled('kategori_bangunan_id')) {
+            $kerusakanQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
+        }
+        $kerusakan = $kerusakanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         return view('kerusakan.index', [
             'kerusakan' => $kerusakan,
+            'kategoribangunan' => $kategoriBangunan
         ]);
     }
 
