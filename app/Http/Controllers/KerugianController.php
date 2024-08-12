@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bencana;
 use App\Models\KategoriBangunan;
 use App\Models\Kerugian;
+use App\Models\Satuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class KerugianController extends Controller
      */
     public function create($id)
     {
-        $bencana = Bencana::where('id', $id)->first();
+        $bencana = Bencana::where('id', $id)->with(['kategori_bencana'])->first();
         // $kategoriBangunan = KategoriBangunan::query()->get();
 
         // dd($kategoriBangunan);
@@ -40,11 +41,13 @@ class KerugianController extends Controller
         $tglMulai = Carbon::parse($bencana->tgl_mulai);
         $tglSelesai = Carbon::parse($bencana->tgl_selesai);
         $jumlahHari = $tglMulai->diffInDays($tglSelesai);
+        $satuan = Satuan::query()->get();
 
         return view('kerugian.create', [
             // 'kategoribangunan' => $kategoriBangunan,
             'bencana' => $bencana,
             'jumlahHari' => $jumlahHari, // Kirim jumlah hari ke view
+            'satuan' => $satuan
         ]);
     }
 
@@ -76,7 +79,7 @@ class KerugianController extends Controller
                     'bencana_id' => $bencana_id,
                     'tipe' => $detail['tipe'],
                     'nilai_ekonomi' => $detail['nilai_ekonomi'],
-                    'satuan' => $detail['satuan'],
+                    'satuan_id' => $detail['satuan_id'],
                     'kuantitas' => $detail['kuantitas'],
                     'deskripsi' => $detail['deskripsi'] ?? null,
                     'created_at' => now(),
