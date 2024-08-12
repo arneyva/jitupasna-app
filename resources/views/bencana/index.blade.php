@@ -103,35 +103,18 @@
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel33">Form Kategori Bencana</h4>
+                                <h4 class="modal-title" id="myModalLabel33">Filter Bencana</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="{{ route('bencana.index') }}" method="Get">
+                            <form action="{{ route('bencana.index') }}" method="GET" id="filterForm">
                                 <div class="modal-body">
-                                    {{-- <label>Kategori Bencana </label>
-                                    <div class="form-group">
-                                        <select class="choices form-select" name="kategori_bencana_id">
-                                            <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                            @foreach ($kategoribencana as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div> --}}
-
                                     <div class="form-group">
                                         <label for="first-name-column">Kategori Bencana</label>
                                         <div class="form-group">
-                                            <select class="form-select" name="kategori_bencana_id">
+                                            <select class="form-select" name="kategori_bencana_id" id="kategori_bencana_id">
                                                 <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                {{-- @foreach ($kategoribencana as $item)
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->nama }}
-                                                    </option>
-                                                @endforeach --}}
                                                 @foreach ($kategoribencana as $item)
                                                     <option value="{{ $item->id }}"
                                                         {{ request()->input('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
@@ -141,17 +124,14 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    {{-- <label>Deskripsi: </label>
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
-                                    </div> --}}
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                                    {{-- <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
                                         <i class="bx bx-x d-block d-sm-none"></i>
                                         <span class="d-none d-sm-block">Close</span>
-                                    </button>
+                                    </button> --}}
+                                    <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
+                                        data-dismiss="modal">{{ __('Reset') }}</button>
                                     <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
                                 </div>
                             </form>
@@ -162,3 +142,10 @@
         </div>
     </div>
 @endsection
+<script>
+    function resetFilters() {
+        document.getElementById('kategori_bencana_id').value = '';
+        // Submit formulir secara otomatis untuk menghapus filter
+        document.getElementById('filterForm').submit();
+    }
+</script>

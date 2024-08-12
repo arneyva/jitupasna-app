@@ -143,18 +143,51 @@ class BencanaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $bencana = Bencana::findOrFail($id);
+        $kategoriBencana = KategoriBencana::all();
+
+        return view('bencana.edit', [
+            'bencana' => $bencana,
+            'kategoribencana' => $kategoriBencana
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $bencana = Bencana::findOrFail($id);
+
+            $bencaRules = $request->validate([
+                'kategori_bencana_id' => 'required',
+                'lokasi' => 'required',
+                'deskripsi' => 'required',
+                'tgl_mulai' => 'required',
+                'tgl_selesai' => 'required',
+            ]);
+
+            $bencana->update([
+                'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
+                'lokasi' => $bencaRules['lokasi'],
+                'deskripsi' => $bencaRules['deskripsi'],
+                'tgl_mulai' => $bencaRules['tgl_mulai'],
+                'tgl_selesai' => $bencaRules['tgl_selesai'],
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('bencana.index')->with('success', 'Data bencana berhasil diperbarui');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            \Log::error('Error updating bencana: ' . $th->getMessage());
+
+            return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
