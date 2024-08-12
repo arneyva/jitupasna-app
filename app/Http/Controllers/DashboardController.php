@@ -32,7 +32,7 @@ class DashboardController extends Controller
 
             // Menghitung estimasi kebutuhan total
             $estimasiKebutuhanTotal = $bencanas->flatMap(function ($bencana) {
-                return $bencana->kerugian->pluck('nilai_ekonomi')
+                return $bencana->kerugian->pluck('BiayaKeseluruhan')
                     ->merge($bencana->kerusakan->pluck('BiayaKeseluruhan'));
             })->sum();
 

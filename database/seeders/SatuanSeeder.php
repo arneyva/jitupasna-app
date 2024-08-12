@@ -26,7 +26,24 @@ class SatuanSeeder extends Seeder
             [
                 'nama' => 'Unit',
                 'deskripsi' => 'Satuan hitungan barang'
+            ],
+            [
+                'nama' => 'Sack',
+                'deskripsi' => 'Satuan pengukuran barang yang biasanya digunakan untuk benda yang dikemas dalam kantong,g'
+            ],
+            [
+                'nama' => 'Kubik',
+                'deskripsi' => 'Satuan volume yang digunakan untuk mengukur kapasitas ruang tiga dimensi'
+            ],
+            [
+                'nama' => 'OH',
+                'deskripsi' => 'Satuan waktu yang digunakan untuk mengukur durasi operasional atau jam kerja suatu mesin, sistem, atau fasilitas'
+            ],
+            [
+                'nama' => 'Jam',
+                'deskripsi' => 'Satuan waktu yang setara dengan 60 menit atau 3.600 detik'
             ]
+
         ];
 
         foreach ($satuans as $satuan) {

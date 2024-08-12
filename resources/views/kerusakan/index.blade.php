@@ -83,12 +83,12 @@
                                 <i data-feather="x"></i>
                             </button>
                         </div>
-                        <form action="{{ route('kerusakan.index') }}" method="Get">
+                        <form action="{{ route('kerusakan.index') }}" method="GET" id="filterForm">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="first-name-column">Kategori Bangunan</label>
                                     <div class="form-group">
-                                        <select class="form-select" name="kategori_bangunan_id">
+                                        <select class="form-select" name="kategori_bangunan_id" id="kategori_bangunan_id">
                                             <option selected disabled value="">{{ __('Pilih...') }}</option>
                                             @foreach ($kategoribangunan as $item)
                                                 <option value="{{ $item->id }}"
@@ -101,10 +101,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Close</span>
-                                </button>
+                                <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
+                                    data-dismiss="modal">{{ __('Reset') }}</button>
                                 <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
                             </div>
                         </form>
@@ -114,3 +112,10 @@
         </div>
     </div>
 @endsection
+<script>
+    function resetFilters() {
+        document.getElementById('kategori_bangunan_id').value = '';
+        // Submit formulir secara otomatis untuk menghapus filter
+        document.getElementById('filterForm').submit();
+    }
+</script>

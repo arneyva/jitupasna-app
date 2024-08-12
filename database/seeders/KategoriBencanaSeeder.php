@@ -21,12 +21,16 @@ class KategoriBencanaSeeder extends Seeder
             'deskripsi' => 'Kejadian di mana air menutupi area yang biasanya kering, seperti akibat hujan deras atau meluapnya sungai.',
         ]);
         KategoriBencana::firstOrCreate([
+            'nama' => 'Banjir Bandaang',
+            'deskripsi' => 'Jenis banjir yang terjadi secara mendadak dan ekstrem, biasanya disebabkan oleh hujan deras dalam waktu singkat, terutama di daerah pegunungan atau lereng bukit',
+        ]);
+        KategoriBencana::firstOrCreate([
             'nama' => 'Tsunami',
             'deskripsi' => 'Gelombang besar yang terjadi akibat gempa bumi atau letusan gunung berapi di dasar laut.',
         ]);
 
         KategoriBencana::firstOrCreate([
-            'nama' => 'Letusan Gunung Berapi',
+            'nama' => 'Erupsi Gunung Berapi',
             'deskripsi' => 'Bencana alam yang terjadi akibat letusan dari gunung berapi yang mengeluarkan lava dan abu vulkanik.',
         ]);
 
@@ -41,10 +45,13 @@ class KategoriBencanaSeeder extends Seeder
         ]);
 
         KategoriBencana::firstOrCreate([
-            'nama' => 'Badai',
+            'nama' => 'Puting Beliung',
             'deskripsi' => 'Kondisi cuaca ekstrim yang melibatkan angin kencang, hujan deras, dan petir.',
         ]);
-
+        KategoriBencana::firstOrCreate([
+            'nama' => 'Kebakaran',
+            'deskripsi' => 'Kebakaran adalah kejadian di mana api menyebar dan membakar material yang mudah terbakar seperti kayu, tanaman, atau bangunan.',
+        ]);
         KategoriBencana::firstOrCreate([
             'nama' => 'Kebakaran Hutan',
             'deskripsi' => 'Bencana alam yang melibatkan api besar yang menyebar dengan cepat dan tidak terkendali di daerah hutan.',
