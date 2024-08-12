@@ -70,13 +70,14 @@ class KerusakanController extends Controller
             $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
-                $subtotal = $detail['kuantitas'] * $detail['harga'];
+                $subtotal = $detail['kuantitas'] * $detail['harga'] * $detail['kuantitas_item'];
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
                     'tipe' => $detail['tipe'],
                     'nama' => $detail['nama'],
                     'kuantitas' => $detail['kuantitas'],
+                    'kuantitas_item' => $detail['kuantitas_item'] ?? 1,
                     'satuan_id' => $detail['satuan_id'],
                     'harga' => $detail['harga'],
                     'created_at' => now(),
