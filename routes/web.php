@@ -7,7 +7,6 @@ use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\SatuanController;
-use App\Models\Kerugian;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {

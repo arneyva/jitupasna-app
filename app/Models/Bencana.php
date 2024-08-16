@@ -22,6 +22,7 @@ class Bencana extends Model
     {
         return $this->hasMany(Kerusakan::class, 'bencana_id', 'id');
     }
+
     public function kerugian()
     {
         return $this->hasMany(Kerugian::class, 'bencana_id', 'id');

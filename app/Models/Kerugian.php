@@ -23,6 +23,7 @@ class Kerugian extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
     public function bencana()
     {
         return $this->belongsTo(Bencana::class, 'bencana_id', 'id');

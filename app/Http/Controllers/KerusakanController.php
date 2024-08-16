@@ -23,9 +23,10 @@ class KerusakanController extends Controller
             $kerusakanQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
         }
         $kerusakan = $kerusakanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
         return view('kerusakan.index', [
             'kerusakan' => $kerusakan,
-            'kategoribangunan' => $kategoriBangunan
+            'kategoribangunan' => $kategoriBangunan,
         ]);
     }
 
@@ -42,7 +43,7 @@ class KerusakanController extends Controller
         return view('kerusakan.create', [
             'kategoribangunan' => $kategoriBangunan,
             'bencana' => $bencana,
-            'satuan' => $satuan
+            'satuan' => $satuan,
         ]);
     }
 
@@ -71,7 +72,7 @@ class KerusakanController extends Controller
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
                 $kuantitasItem = $detail['kuantitas_item'] ?? 1;
-                $subtotal = $detail['kuantitas'] * $detail['harga'] *  $kuantitasItem;
+                $subtotal = $detail['kuantitas'] * $detail['harga'] * $kuantitasItem;
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
@@ -117,13 +118,15 @@ class KerusakanController extends Controller
         $bencana = Bencana::where('id', $kerusakan->bencana_id)->with(['kategori_bencana'])->first();
         $kategoribangunan = KategoriBangunan::query()->get();
         $satuan = Satuan::query()->get();
+
         return view('kerusakan.edit', [
             'kerusakan' => $kerusakan,
             'kategoribangunan' => $kategoribangunan,
             'satuan' => $satuan,
-            'bencana' => $bencana
+            'bencana' => $bencana,
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -161,7 +164,6 @@ class KerusakanController extends Controller
                     $kerusakanDetail->harga = $detail['harga'];
                     $kerusakanDetail->kuantitas = $detail['kuantitas'];
 
-
                     // Update fields based on 'tipe'
                     if ($kerusakanDetail->tipe == 2) {
                         // $kerusakanDetail->kuantitas = $detail['kuantitas'];
@@ -183,12 +185,12 @@ class KerusakanController extends Controller
             $kerusakan->BiayaKeseluruhan = $biayaKeseluruhan;
             $kerusakan->save();
             DB::commit();
+
             return redirect()->route('kerusakan.index')->with('success', 'Data kerusakan berhasil diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
-
 
     /**
      * Remove the specified resource from storage.

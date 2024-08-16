@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bencana;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-
     public function index()
     {
         // Mendapatkan tanggal awal dan akhir tahun ini

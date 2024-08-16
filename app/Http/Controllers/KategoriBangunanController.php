@@ -16,11 +16,12 @@ class KategoriBangunanController extends Controller
     {
         $KategoriBangunanQuery = KategoriBangunan::query()->where('deleted_at', null)->latest();
         if ($request->filled('nama')) {
-            $KategoriBangunanQuery->where('nama', 'like', '%' . $request->input('nama') . '%');
+            $KategoriBangunanQuery->where('nama', 'like', '%'.$request->input('nama').'%');
         }
         $KategoriBangunan = $KategoriBangunanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
         return view('kategori-bangunan.index', [
-            'KategoriBangunan' => $KategoriBangunan
+            'KategoriBangunan' => $KategoriBangunan,
         ]);
     }
 
@@ -45,17 +46,19 @@ class KategoriBangunanController extends Controller
                     Rule::unique(KategoriBangunan::class, 'nama')->whereNull('deleted_at'),
                 ],
                 'deskripsi' => [
-                    'nullable'
-                ]
+                    'nullable',
+                ],
             ]);
             $KategoriBangunan = KategoriBangunan::create([
                 'nama' => $validated['nama'],
                 'deskripsi' => $validated['deskripsi'],
             ]);
             DB::commit();
+
             return redirect()->route('kategori-bangunan.index')->with('success', 'Kategori Bencana Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -89,17 +92,19 @@ class KategoriBangunanController extends Controller
                     Rule::unique(KategoriBangunan::class, 'nama')->whereNull('deleted_at')->ignore($id),
                 ],
                 'deskripsi' => [
-                    'nullable'
-                ]
+                    'nullable',
+                ],
             ]);
             $KategoriBangunan = KategoriBangunan::where('id', $id)->update([
                 'nama' => $validated['nama'],
                 'deskripsi' => $validated['deskripsi'],
             ]);
             DB::commit();
+
             return redirect()->route('kategori-bangunan.index')->with('success', 'Kategori Bencana Sukses Diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
