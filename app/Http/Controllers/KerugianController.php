@@ -19,6 +19,7 @@ class KerugianController extends Controller
     {
         // $kategoriBangunan = KategoriBangunan::query()->get();
         $kerugian = Kerugian::query()->with(['bencana'])->latest()->paginate(5);
+
         return view('kerugian.index', [
             'kerugian' => $kerugian,
         ]);
@@ -43,7 +44,7 @@ class KerugianController extends Controller
             // 'kategoribangunan' => $kategoriBangunan,
             'bencana' => $bencana,
             'jumlahHari' => $jumlahHari, // Kirim jumlah hari ke view
-            'satuan' => $satuan
+            'satuan' => $satuan,
         ]);
     }
 
@@ -89,6 +90,7 @@ class KerugianController extends Controller
             return redirect()->route('kerugian.index')->with('success', 'Data kerugian berhasil disimpan.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -109,10 +111,11 @@ class KerugianController extends Controller
         $kerugian = Kerugian::where('id', $id)->with(['bencana'])->first();
         $bencana = Bencana::where('id', $kerugian->bencana_id)->with(['kategori_bencana'])->first();
         $satuan = Satuan::query()->get();
+
         return view('kerugian.edit', [
             'kerugian' => $kerugian,
             'satuan' => $satuan,
-            'bencana' => $bencana
+            'bencana' => $bencana,
         ]);
     }
 
@@ -150,10 +153,10 @@ class KerugianController extends Controller
             return redirect()->route('kerugian.index')->with('success', 'Data kerugian berhasil diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -20,6 +20,7 @@ class BencanaController extends Controller
             $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
         }
         $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
         return view('bencana.index', [
             'bencana' => $bencana,
             'kategoribencana' => $kategoriBencana,
@@ -58,7 +59,6 @@ class BencanaController extends Controller
         return $code;
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -89,11 +89,12 @@ class BencanaController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: ' . $th->getMessage());
+            \Log::error('Error storing bencana: '.$th->getMessage());
 
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
     }
+
     public function show(string $id)
     {
         $bencana = Bencana::with(['kerusakan.detail'])->findOrFail($id);
@@ -123,7 +124,7 @@ class BencanaController extends Controller
 
         return view('bencana.edit', [
             'bencana' => $bencana,
-            'kategoribencana' => $kategoriBencana
+            'kategoribencana' => $kategoriBencana,
         ]);
     }
 
@@ -155,12 +156,11 @@ class BencanaController extends Controller
             return redirect()->route('bencana.index')->with('success', 'Data bencana berhasil diperbarui');
         } catch (\Throwable $th) {
             DB::rollBack();
-            \Log::error('Error updating bencana: ' . $th->getMessage());
+            \Log::error('Error updating bencana: '.$th->getMessage());
 
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
     }
-
 
     /**
      * Remove the specified resource from storage.

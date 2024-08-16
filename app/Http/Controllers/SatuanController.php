@@ -15,8 +15,9 @@ class SatuanController extends Controller
     public function index()
     {
         $satuan = Satuan::query()->where('deleted_at', null)->latest()->paginate(5);
+
         return view('satuan.index', [
-            'satuan' => $satuan
+            'satuan' => $satuan,
         ]);
     }
 
@@ -41,17 +42,19 @@ class SatuanController extends Controller
                     Rule::unique(Satuan::class, 'nama')->whereNull('deleted_at'),
                 ],
                 'deskripsi' => [
-                    'nullable'
-                ]
+                    'nullable',
+                ],
             ]);
             $satuan = Satuan::create([
                 'nama' => $validated['nama'],
                 'deskripsi' => $validated['deskripsi'],
             ]);
             DB::commit();
+
             return redirect()->route('satuan.index')->with('success', 'Satuan Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
@@ -85,17 +88,19 @@ class SatuanController extends Controller
                     Rule::unique(Satuan::class, 'nama')->whereNull('deleted_at')->ignore($id),
                 ],
                 'deskripsi' => [
-                    'nullable'
-                ]
+                    'nullable',
+                ],
             ]);
             $satuan = Satuan::where('id', $id)->update([
                 'nama' => $validated['nama'],
                 'deskripsi' => $validated['deskripsi'],
             ]);
             DB::commit();
+
             return redirect()->route('satuan.index')->with('success', 'Satuan Sukses Diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
+
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
