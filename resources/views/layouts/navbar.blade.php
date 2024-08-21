@@ -37,11 +37,11 @@
                         <img src="{{ asset('frontend/dist/assets/images/avatar/avatar-s-1.png') }}" alt=""
                             srcset="">
                     </div> --}}
-                    <div class="avatar mr-1">
+                    {{-- <div class="avatar mr-1">
                         <img src="{{ asset('frontend/dist/assets/images/avatar/unslogo.png') }}" alt=""
                             srcset="">
 
-                    </div>
+                    </div> --}}
                     <div class="d-none d-md-block d-lg-inline-block">PENGKAJIAN KEBUTUHAN
                         PASCABENCANA</div>
                 </a>
