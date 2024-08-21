@@ -16,7 +16,7 @@ class KategoriBangunanController extends Controller
     {
         $KategoriBangunanQuery = KategoriBangunan::query()->where('deleted_at', null)->latest();
         if ($request->filled('nama')) {
-            $KategoriBangunanQuery->where('nama', 'like', '%'.$request->input('nama').'%');
+            $KategoriBangunanQuery->where('nama', 'like', '%' . $request->input('nama') . '%');
         }
         $KategoriBangunan = $KategoriBangunanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
 
@@ -38,6 +38,7 @@ class KategoriBangunanController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         try {
             DB::beginTransaction();
             $validated = $request->validate([
