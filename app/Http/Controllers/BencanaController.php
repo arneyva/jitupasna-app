@@ -85,13 +85,13 @@ class BencanaController extends Controller
             // dd($request->all());
             DB::commit();
 
-            return redirect()->route('bencana.index')->with('success', 'Sale created successfully');
+            return redirect()->route('bencana.index')->with('success', 'Bencana Sukses Ditambahkan');
         } catch (\Throwable $th) {
             DB::rollBack();
             // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: '.$th->getMessage());
+            \Log::error('Error storing bencana: ' . $th->getMessage());
 
-            return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
+            return redirect()->back()->with('error', 'Data bencana gagal ditambahkan');
         }
     }
 
@@ -156,7 +156,7 @@ class BencanaController extends Controller
             return redirect()->route('bencana.index')->with('success', 'Data bencana berhasil diperbarui');
         } catch (\Throwable $th) {
             DB::rollBack();
-            \Log::error('Error updating bencana: '.$th->getMessage());
+            \Log::error('Error updating bencana: ' . $th->getMessage());
 
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
