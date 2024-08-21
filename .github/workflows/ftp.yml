@@ -18,8 +18,8 @@ jobs:
         password: ${{ secrets.FTP_PASS }}
         protocol: ftps
         port: ${{ secrets.FTP_PORT }}
-        local-dir: public
-        server-dir: /home/jitg2944/public_html
+        local-dir: public/
+        server-dir: /home/jitg2944/public_html/
         exclude: |
           - .git*
           - .git*/**
