@@ -10,7 +10,7 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
 
-    - name: 📂 Sync files
+    - name: 📂 Deploy public files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.FTP_SERVERS }}
@@ -18,8 +18,14 @@ jobs:
         password: ${{ secrets.FTP_PASS }}
         protocol: ftps
         port: ${{ secrets.FTP_PORT }}
-        exclude: .git*
+        local-dir: public
+        server-dir: /home/jitg2944/public_html
+        exclude:
+          - .git*
           - .git*/**
           - .github
+          - .github/**
+          - .env
+
         
         
