@@ -33,3 +33,10 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
           server-dir: /home/jitg2944/public_html/
+          exclude: |
+            .git*
+            node_modules/
+            vendor/
+            tests/
+            *.md
+            *.yml
