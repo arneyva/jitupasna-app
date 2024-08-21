@@ -20,12 +20,9 @@ jobs:
         port: ${{ secrets.FTP_PORT }}
         local-dir: public
         server-dir: /home/jitg2944/public_html
-        exclude:
+        exclude: |
           - .git*
           - .git*/**
           - .github
           - .github/**
           - .env
-
-        
-        
