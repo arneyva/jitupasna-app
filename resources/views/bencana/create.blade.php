@@ -80,7 +80,7 @@
                                         <div class="form-group">
                                             <label for="last-name-column">Tanggal Bencana</label>
                                             <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="tgl_mulai">
+                                                name="tanggal">
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,6 @@
                                             <label for="first-name-column">Desa</label>
                                             <div class="form-group">
                                                 <select id="desa" multiple="multiple-remove" name="desa_ids[]">
-
                                                 </select>
                                             </div>
                                         </div>
@@ -115,7 +114,7 @@
                                         <div class="form-group">
                                             <label for="last-name-column">Lattitude</label>
                                             <input type="number" id="last-name-column" class="form-control" placeholder=""
-                                                name="lattitude" step="0.00000001">
+                                                name="latitude" step="0.00000001">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -131,11 +130,7 @@
                                         <div class="form-group">
                                             <label for="company-column">Deskripsi</label>
                                             <div id="full"></div>
-                                            {{-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea> --}}
-                                            {{-- <div class="form-group">
-                                                <div id="full"></div>
-                                                <input type="hidden" name="satuan" id="satuan">
-                                            </div> --}}
+                                            <input type="hidden" name="deskripsi" id="deskripsi">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -302,7 +297,6 @@
             document.getElementById('imageInput').click();
         });
     </script>
-
     <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -352,7 +346,7 @@
 
             // Mengatur nilai hidden input saat form disubmit
             document.querySelector('form').onsubmit = function() {
-                document.querySelector('#satuan').value = descriptionEditor.root.innerHTML;
+                document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
                 document.querySelector('#nama').value = notesEditor.root.innerHTML;
 
                 console.log('satuan:', descriptionEditor.root.innerHTML);

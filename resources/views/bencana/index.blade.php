@@ -21,7 +21,6 @@
                                     <th>Bencana</th>
                                     <th>Tanggal</th>
                                     <th>Lokasi</th>
-                                    <th></th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -30,9 +29,12 @@
                                     <tr>
                                         <td>{{ $item->Ref }}</td>
                                         <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td>
-                                        <td>{{ $item->lokasi }}</td>
-                                        <td class="text-bold-500">{{ $item->tgl_mulai }}</td>
-                                        <td>{{ $item->tgl_selesai }}</td>
+                                        <td class="text-bold-500">{{ $item->tanggal }}</td>
+                                        <td>
+                                            @foreach ($item->desa as $desa)
+                                                <li> Kelurahan/Desa {{ $desa->nama }}</li>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             <div class="btn-group mb-1">
                                                 <div class="dropdown dropdown-color-icon">
