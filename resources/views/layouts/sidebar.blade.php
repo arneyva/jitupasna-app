@@ -46,9 +46,12 @@
                         <li>
                             <a href="{{ route('satuan.index') }}">Satuan</a>
                         </li>
+                        <li>
+                            <a href="{{ route('hsd.index') }}">Harga Satuan Dasar</a>
+                        </li>
                     </ul>
                 </li>
-                <li class="sidebar-item  has-sub">
+                {{-- <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="file" width="20"></i>
                         <span>Harga Satuan Dasar</span>
@@ -64,7 +67,7 @@
                             <a href="{{ route('satuan.index') }}">Alat</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

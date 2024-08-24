@@ -63,11 +63,6 @@ Route::prefix('/satuan')->name('satuan.')->group(function () {
     Route::patch('update/{id}', [SatuanController::class, 'update'])->name('update');
 });
 Route::prefix('/hsd')->name('hsd.')->group(function () {
-    Route::prefix('/bahan')->name('bahan.')->group(function () {
-        Route::get('list', [HargaSatuanDasarController::class, 'indexBahan'])->name('index');
-        Route::post('store', [HargaSatuanDasarController::class, 'storeBahan'])->name('store');
-    });
-    Route::get('list', [SatuanController::class, 'index'])->name('index');
-    Route::post('store', [SatuanController::class, 'store'])->name('store');
-    Route::patch('update/{id}', [SatuanController::class, 'update'])->name('update');
+    Route::get('list', [HargaSatuanDasarController::class, 'index'])->name('index');
+    Route::post('store', [HargaSatuanDasarController::class, 'store'])->name('store');
 });
