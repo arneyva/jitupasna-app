@@ -43,7 +43,7 @@
 
                     </div> --}}
                     <div class="d-none d-md-block d-lg-inline-block">PENGKAJIAN KEBUTUHAN
-                        PASCABENCANA Test</div>
+                        PASCABENCANA</div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HSD;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class HargaSatuanDasarController extends Controller
 {
@@ -13,28 +16,33 @@ class HargaSatuanDasarController extends Controller
     public function storeBahan(Request $request)
     {
         dd($request->all());
-        // try {
-        //     DB::beginTransaction();
-        //     $validated = $request->validate([
-        //         'nama' => [
-        //             'required',
-        //             Rule::unique(KategoriBangunan::class, 'nama')->whereNull('deleted_at'),
-        //         ],
-        //         'deskripsi' => [
-        //             'nullable',
-        //         ],
-        //     ]);
-        //     $KategoriBangunan = KategoriBangunan::create([
-        //         'nama' => $validated['nama'],
-        //         'deskripsi' => $validated['deskripsi'],
-        //     ]);
-        //     DB::commit();
+        try {
+            DB::beginTransaction();
+            $validated = $request->validate([
+                'nama' => [
+                    'nullable',
+                    Rule::unique(HSD::class, 'nama')->whereNull('deleted_at'),
+                ],
+                'satuan' => [
+                    'nullable',
+                ],
+                'harga' => [
+                    'nullable',
+                ],
+            ]);
+            $bahan = HSD::create([
+                'tipe' => 1,
+                'nama' => $validated['nama'],
+                'satuan' => $validated['satuan'],
+                'harga' => $validated['harga'],
+            ]);
+            DB::commit();
 
-        //     return redirect()->route('kategori-bangunan.index')->with('success', 'Kategori Bencana Sukses Ditambahkan');
-        // } catch (\Illuminate\Validation\ValidationException $e) {
-        //     DB::rollBack();
+            return redirect()->route('hsd.bahan.index')->with('success', 'Bahan Sukses Ditambahkan');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
 
-        //     return redirect()->back()->withErrors($e->errors())->withInput();
-        // }
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
     }
 }

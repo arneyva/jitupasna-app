@@ -19,9 +19,9 @@
                                 <tr>
                                     <th>Ref</th>
                                     <th>Bencana</th>
+                                    <th>Tanggal</th>
                                     <th>Lokasi</th>
-                                    <th>Tanggal Mulai</th>
-                                    <th>Tanggal Berakhir</th>
+                                    <th></th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

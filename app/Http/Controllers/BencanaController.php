@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bencana;
+use App\Models\Desa;
 use App\Models\KategoriBencana;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +28,20 @@ class BencanaController extends Controller
             'kategoribencana' => $kategoriBencana,
         ]);
     }
+    // public function getDesa(Request $request, $id)
+    // {
+    //     $kecamatan = Kecamatan::findOrFail($id);
+    //     $desaTerkait = Desa::where('kecamatan_id', $kecamatan->id)->get();
+
+    //     return response()->json([
+    //         'desaTerkait' => $desaTerkait,
+    //     ]);
+    // }
+    public function getDesaByKecamatan($kecamatan_id)
+    {
+        $desa = Desa::where('kecamatan_id', $kecamatan_id)->get();
+        return response()->json(['desaTerkait' => $desa]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,9 +49,10 @@ class BencanaController extends Controller
     public function create()
     {
         $kategoriBencana = KategoriBencana::query()->get();
-
+        $kecamatan = Kecamatan::query()->where('deleted_at', '=', null)->get();
         return view('bencana.create', [
             'kategoribencana' => $kategoriBencana,
+            'kecamatan' => $kecamatan
         ]);
     }
 
@@ -64,24 +81,36 @@ class BencanaController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         try {
             DB::beginTransaction();
             $bencaRules = $request->validate([
                 'kategori_bencana_id' => 'required',
-                'lokasi' => 'required',
-                'deskripsi' => 'required',
                 'tgl_mulai' => 'required',
-                'tgl_selesai' => 'required',
+                'kecamatan_id' => 'required',
+                'desa_ids' => 'array',
+                'deskripsi' => 'nullable',
+                'image' => 'nullable',
             ]);
             $bencana = Bencana::create([
-                // 'user_id' => auth()->user()->id,
-                'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
-                'lokasi' => $bencaRules['lokasi'],
                 'Ref' => $this->getRef(),
-                'deskripsi' => $bencaRules['deskripsi'],
+                'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
                 'tgl_mulai' => $bencaRules['tgl_mulai'],
-                'tgl_selesai' => $bencaRules['tgl_selesai'],
+                'kecamatan_id' => $bencaRules['kecamatan_id'],
+                'deskripsi' => $bencaRules['deskripsi'],
+                'image' => $bencaRules['tgl_selesai'],
             ]);
+            // Mengambil array ID desa
+            $desaIds = $bencaRules['desa_ids'] ?? [];
+            // Menyimpan data ke tabel pivot menggunakan foreach
+            foreach ($desaIds as $desaId) {
+                DB::table('wilayah_bencana')->insert([
+                    'bencana_id' => $bencana->id,
+                    'desa_id' => $desaId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
             // dd($request->all());
             DB::commit();
 

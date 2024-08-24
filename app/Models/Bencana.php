@@ -27,4 +27,9 @@ class Bencana extends Model
     {
         return $this->hasMany(Kerugian::class, 'bencana_id', 'id');
     }
+
+    public function desa()
+    {
+        return $this->belongsToMany(Desa::class, 'wilayah_bencana', 'bencana_id', 'desa_id');
+    }
 }
