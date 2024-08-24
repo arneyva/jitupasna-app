@@ -9,9 +9,13 @@ use Illuminate\Validation\Rule;
 
 class HargaSatuanDasarController extends Controller
 {
-    public function indexBahan()
+    public function index()
     {
-        return view('harga-satuan-dasar.bahan');
+        $hsd = HSD::query()->where('deleted_at', null)
+            ->orderBy('nama', 'asc')->paginate(10);
+        return view('harga-satuan-dasar.index', [
+            'hsd' => $hsd
+        ]);
     }
     public function storeBahan(Request $request)
     {

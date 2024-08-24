@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Bahan</h4>
+                    <h4 class="card-title mb-0">Harga Satuan Dasar</h4>
                     <div>
                         <button class="btn btn-danger" type="button" data-toggle="modal"
                             data-target="#FormUntukUpdate">Filter</button>
@@ -19,74 +19,34 @@
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Nama Bahan</th>
+                                    <th>Tipe</th>
+                                    <th>Nama</th>
                                     <th>Satuan</th>
                                     <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($KategoriBangunan as $item)
+                                @foreach ($hsd as $item)
                                     <tr>
+                                        @if ($item->tipe == 1)
+                                            <td><span class="badge bg-danger">Bahan</span></td>
+                                        @elseif ($item->tipe == 2)
+                                            <td><span class="badge bg-success">Upah</span></td>
+                                        @elseif ($item->tipe == 3)
+                                            <td><span class="badge bg-warning">Alat</span></td>
+                                        @endif
                                         <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->deskripsi }}</td>
-                                        <td>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem"
-                                                viewBox="0 0 24 24" data-toggle="modal"
-                                                data-target="#UpdateData{{ $item->id }}">
-                                                <path fill="#5A8DEE"
-                                                    d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z" />
-                                            </svg>
-                                            <div class="modal fade text-left" id="UpdateData{{ $item->id }}"
-                                                tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel33">Form Update Kategori
-                                                                Bangunan</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <form action="{{ route('kategori-bangunan.update', $item->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <div class="modal-body">
-                                                                <label>Nama: </label>
-                                                                <div class="form-group">
-                                                                    <input type="text" placeholder=""
-                                                                        class="form-control" name="nama"
-                                                                        value="{{ $item->nama }}" required>
-                                                                </div>
-                                                                <label>Deskripsi: </label>
-                                                                <div class="form-group">
-                                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"> {{ $item->deskripsi }}</textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light-secondary"
-                                                                    data-dismiss="modal">
-                                                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                                                    <span class="d-none d-sm-block">Close</span>
-                                                                </button>
-                                                                <button type="submit"
-                                                                    class="btn btn-primary mr-1 mb-1">Submit</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td>{{ $item->satuan }}</td>
+                                        <td>{{ 'Rp ' . number_format($item->harga, 2, ',', '.') }}</td>
+
+                                        <td>Aksi</td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                         <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{-- {{ $KategoriBangunan->links() }} --}}
+                            {{ $hsd->links() }}
                         </div>
                     </div>
                 </div>
@@ -101,10 +61,18 @@
                                     <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="{{ route('hsd.bahan.store') }}" method="POST">
+                            <form action="#" method="POST">
                                 @csrf
                                 <div class="modal-body">
-                                    <label>Nama Bahan: </label>
+                                    <label>Nama: </label>
+                                    <div class="form-group">
+                                        <select class="choices form-select" name="tipe" id="">
+                                            <option value="1">Bahan</option>
+                                            <option value="2">Upah</option>
+                                            <option value="3">Alat</option>
+                                        </select>
+                                    </div>
+                                    <label>Nama: </label>
                                     <div class="form-group">
                                         <div id="full-nama"></div>
                                         <input type="hidden" name="nama" id="nama">
@@ -142,13 +110,22 @@
                                     <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="{{ route('kategori-bangunan.index') }}" method="GET" id="filterForm">
+                            <form action="{{ route('hsd.index') }}" method="GET" id="filterForm">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="first-name-column">Cari Kategori Bangunan</label>
+                                        <label for="first-name-column">Cari</label>
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="nama" name="nama"
-                                                value="{{ request()->input('nama') }}">
+                                                value="{{ request()->input('nama') }}"
+                                                placeholder="masukan nama/satuan ....">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-column">Cari</label>
+                                        <div class="form-group">
+                                            <select class="form-select" name="tipe" id="tipe">
+                                                <option selected disabled value="">{{ __('Pilih...') }}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -198,10 +175,10 @@
                         }, {
                             indent: '+1'
                         }],
-                        ['direction', {
-                            align: []
-                        }],
-                        ['link', 'image', 'video'],
+                        // ['direction', {
+                        //     align: []
+                        // }],
+                        // ['link', 'image', 'video'],
                         ['clean']
                     ]
                 }
