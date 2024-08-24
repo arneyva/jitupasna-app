@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bencana;
 use App\Models\DetailKerusakan;
+use App\Models\HSD;
 use App\Models\KategoriBangunan;
 use App\Models\Kerusakan;
 use App\Models\Satuan;
@@ -38,12 +39,14 @@ class KerusakanController extends Controller
         $bencana = Bencana::where('id', $id)->first();
         $kategoriBangunan = KategoriBangunan::query()->get();
         $satuan = Satuan::query()->get();
+        $hsd = HSD::query()->get();
 
         // dd($kategoriBangunan);
         return view('kerusakan.create', [
             'kategoribangunan' => $kategoriBangunan,
             'bencana' => $bencana,
             'satuan' => $satuan,
+            'hsd' => $hsd,
         ]);
     }
 

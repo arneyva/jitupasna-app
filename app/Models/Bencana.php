@@ -11,7 +11,7 @@ class Bencana extends Model
 
     protected $table = 'bencana';
 
-    protected $fillable = ['kategori_bencana_id', 'lokasi', 'deskripsi', 'tgl_mulai', 'tgl_selesai', 'Ref'];
+    protected $fillable = ['kategori_bencana_id', 'tanggal', 'kecamatan_id', 'latitude', 'longitude', 'Ref','deskripsi','gambar'];
 
     public function kategori_bencana()
     {

@@ -49,7 +49,9 @@
                             <div class="col-md-12 col-12">
                                 <div class="form-group">
                                     <label for="company-column">Deskripsi</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" readonly> {{ $bencana->deskripsi }}</textarea>
+                                    {{-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" readonly> {{!! $bencana->deskripsi !! }}</textarea> --}}
+                                    <div class="form-control" style="height: auto;">{!! $bencana->deskripsi !!}</div>
+
                                 </div>
                             </div>
                             {{-- <div class="row">
@@ -75,7 +77,8 @@
                                         <tbody>
                                             <tr>
                                                 <th>{{ __('Kerusakan') }}</th>
-                                                <td>{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }} ~ {{ $totalKuantitas }} Bangunan</td>
+                                                <td>{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }} ~
+                                                    {{ $totalKuantitas }} Bangunan</td>
                                             </tr>
                                             <tr>
                                                 <th>{{ __('Kerugian') }}</th>

@@ -17,7 +17,7 @@ class BencanaController extends Controller
     public function index(Request $request)
     {
         $kategoriBencana = KategoriBencana::query()->get();
-        $bencanaQuery = Bencana::query()->latest();
+        $bencanaQuery = Bencana::query()->with('desa')->latest();
         if ($request->filled('kategori_bencana_id')) {
             $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
         }
@@ -81,24 +81,28 @@ class BencanaController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         try {
             DB::beginTransaction();
             $bencaRules = $request->validate([
                 'kategori_bencana_id' => 'required',
-                'tgl_mulai' => 'required',
+                'tanggal' => 'required',
                 'kecamatan_id' => 'required',
                 'desa_ids' => 'array',
+                'latitude' => 'nullable',
+                'longitude' => 'nullable',
                 'deskripsi' => 'nullable',
-                'image' => 'nullable',
+                'gambar' => 'nullable',
             ]);
             $bencana = Bencana::create([
                 'Ref' => $this->getRef(),
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
-                'tgl_mulai' => $bencaRules['tgl_mulai'],
+                'tanggal' => $bencaRules['tanggal'],
                 'kecamatan_id' => $bencaRules['kecamatan_id'],
+                'latitude' => $bencaRules['latitude'],
+                'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
-                'image' => $bencaRules['tgl_selesai'],
+                'gambar' => $bencaRules['image'] ?? null,
             ]);
             // Mengambil array ID desa
             $desaIds = $bencaRules['desa_ids'] ?? [];
@@ -120,7 +124,7 @@ class BencanaController extends Controller
             // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
             \Log::error('Error storing bencana: ' . $th->getMessage());
 
-            return redirect()->back()->with('error', 'Data bencana gagal ditambahkan');
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 

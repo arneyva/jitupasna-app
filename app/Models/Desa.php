@@ -12,4 +12,8 @@ class Desa extends Model
     protected $table = 'desa';
 
     protected $fillable = ['kecamatan_id','nama','kode_pos'];
+    public function bencana()
+    {
+        return $this->belongsToMany(Bencana::class, 'wilayah_bencana', 'desa_id', 'bencana_id');
+    }
 }
