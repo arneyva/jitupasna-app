@@ -29,7 +29,10 @@ Route::prefix('/bencana')->name('bencana.')->group(function () {
     Route::get('edit/{id}', [BencanaController::class, 'edit'])->name('edit');
     Route::patch('update/{id}', [BencanaController::class, 'update'])->name('update');
     Route::get('destroy/{id}', [BencanaController::class, 'destroy'])->name('destroy');
+    // Route::get('/get-desa/{id}', [BencanaController::class, 'getDesa'])->name('getDesa');
 });
+Route::get('/bencana/get-desa/{kecamatan_id}', [BencanaController::class, 'getDesaByKecamatan']);
+
 Route::prefix('/kerusakan')->name('kerusakan.')->group(function () {
     Route::get('list', [KerusakanController::class, 'index'])->name('index');
     Route::get('create/{id}', [KerusakanController::class, 'create'])->name('create');

@@ -11,9 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bencana', function (Blueprint $table) {
-            $table->text('deskripsi')->nullable()->change();
-        });
         Schema::table('kategori_bangunan', function (Blueprint $table) {
             $table->text('deskripsi')->nullable()->change();
         });
@@ -36,9 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bencana', function (Blueprint $table) {
-            $table->text('deskripsi')->nullable(false)->change();
-        });
         Schema::table('kategori_bangunan', function (Blueprint $table) {
             $table->string('deskripsi')->nullable()->change();
         });

@@ -112,7 +112,7 @@
                                     <label>Satuan: </label>
                                     <div class="form-group">
                                         <div id="full"></div>
-                                        <input type="hidden" name="deskripsi" id="deskripsi">
+                                        <input type="hidden" name="satuan" id="satuan">
                                     </div>
                                     <label>Harga: </label>
                                     <div class="form-group">
@@ -214,10 +214,10 @@
 
         // Mengatur nilai hidden input saat form disubmit
         document.querySelector('form').onsubmit = function() {
-            document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
+            document.querySelector('#satuan').value = descriptionEditor.root.innerHTML;
             document.querySelector('#nama').value = notesEditor.root.innerHTML;
 
-            console.log('Deskripsi:', descriptionEditor.root.innerHTML);
+            console.log('satuan:', descriptionEditor.root.innerHTML);
             console.log('Catatan:', notesEditor.root.innerHTML);
         };
     });

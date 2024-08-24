@@ -1,5 +1,49 @@
 @extends('layouts.main')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
 <style>
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+
+    .overlay {
+        z-index: 2;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+
+    .image-container {
+        overflow: hidden;
+        max-width: 510px !important;
+        max-height: 370px !important;
+    }
+
+    .preview {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .modal-lg {
+            max-width: 700px;
+        }
+
+        .preview {
+            display: block;
+            overflow: hidden;
+            width: 210px;
+            height: 210px;
+            border: 1px solid red;
+        }
+    }
+
     .row {
         margin-bottom: 20px;
     }
@@ -34,32 +78,103 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="last-name-column">Lokasi Kejadian</label>
-                                            <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                                name="lokasi">
+                                            <label for="last-name-column">Tanggal Bencana</label>
+                                            <input type="date" id="last-name-column" class="form-control" placeholder=""
+                                                name="tgl_mulai">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="last-name-column">Tanggal Mulai Bencana</label>
-                                            <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="tgl_mulai">
+                                            <label for="first-name-column">Kecamatan</label>
+                                            <div class="form-group">
+                                                <select class="choices form-select" name="kecamatan_id" id="kecamatan">
+                                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
+                                                    @foreach ($kecamatan as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="last-name-column">Tanggal Berakhir Bencana</label>
-                                            <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="tgl_selesai">
+                                            <label for="first-name-column">Desa</label>
+                                            <div class="form-group">
+                                                <select id="desa" multiple="multiple-remove" name="desa_ids[]">
+
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-12">
-                                    <div class="form-group">
-                                        <label for="company-column">Deskripsi</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="last-name-column">Lattitude</label>
+                                            <input type="number" id="last-name-column" class="form-control" placeholder=""
+                                                name="lattitude" step="0.00000001">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="last-name-column">longitude</label>
+                                            <input type="number" id="last-name-column" class="form-control" placeholder=""
+                                                name="longitude" step="0.00000001">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="company-column">Deskripsi</label>
+                                            <div id="full"></div>
+                                            {{-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea> --}}
+                                            {{-- <div class="form-group">
+                                                <div id="full"></div>
+                                                <input type="hidden" name="satuan" id="satuan">
+                                            </div> --}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="company-column">Foto</label>
+                                            <div class="card-header pb-4 border-dashed rounded"
+                                                style="border: 1px dashed rgb(94, 87, 87);">
+                                                <div
+                                                    class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
+                                                    <img src="/hopeui/html/assets/images/products/no-image.png"
+                                                        id="firstImage" alt="profile-pic"
+                                                        class="theme-color-default-img profile-pic rounded avatar-100">
+                                                    <button type="button" class="upload-icone bg-primary"
+                                                        id="chooseImageButton">
+                                                        <svg class="upload-button icon-14" width="14"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill="#ffffff"
+                                                                d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
+                                                        </svg>
+                                                        <input type="file" name="image" class="image" id="imageInput"
+                                                            style="display: none;">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="croppedImageData" name="avatar">
+                                            <div class="img-extension mt-3">
+                                                <div class="d-inline-block align-items-center py-1">
+                                                    <span>Only</span>
+                                                    <a href="#">.jpg</a>
+                                                    <a href="#">.png</a>
+                                                    <a href="#">.jpeg</a>
+                                                    <span>allowed</span>
+                                                </div>
+                                                <div class="d-inline-block align-items-center">
+                                                    <span>Max. File size</span>
+                                                    <a href="#">10 MB</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
@@ -71,9 +186,225 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                aria-hidden="true">
+                <div class="background">
+                    <div class="modal-dialog modal-dialog-centered modal-lg overlay" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">Crop Image</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="docs-demo">
+                                            <div class="image-container">
+                                                <img id="image" src="" alt="Image for cropping">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 px-0">
+                                        <div class="preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="crop">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 @endsection
 @push('script')
-    <script></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script>
+        var bs_modal = $('#modal');
+        var image = document.getElementById('image');
+        var cropper, reader, file;
+
+        // Handle file input change
+        $("body").on("change", ".image", function(e) {
+            var files = e.target.files;
+            var maxFileSizeInBytes = 10 * 1024 * 1024;
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            if (files && files.length > 0) {
+                file = files[0];
+
+                // Validate file extension
+                var fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert("Only .jpg, .jpeg, and .png files are allowed.");
+                    $(this).val('');
+                    return;
+                }
+
+                // Validate file size
+                if (file.size > maxFileSizeInBytes) {
+                    alert("File size exceeds the maximum allowed size.");
+                    $(this).val('');
+                    return;
+                }
+
+                // Prepare image for cropping
+                var done = function(url) {
+                    image.src = url;
+                    bs_modal.modal('show');
+                };
+
+                // Use URL API or FileReader API to get image URL
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function(e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Reset the file input to allow the same file to be selected again
+            $(this).val('');
+        });
+
+        // Initialize cropper on modal show
+        bs_modal.on('shown.bs.modal', function() {
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                autoCropArea: 1,
+                dragMode: 'move',
+                preview: '.preview'
+            });
+        }).on('hidden.bs.modal', function() {
+            cropper.destroy();
+            cropper = null;
+        });
+
+        // Handle crop button click
+        $("#crop").click(function() {
+            canvas = cropper.getCroppedCanvas();
+            var croppedImage = canvas.toDataURL(); // Get the cropped image as base64 data URL
+            $("#firstImage").attr("src",
+                croppedImage); // Set the src attribute of the image element on the main page
+            $("#croppedImageData").val(
+                croppedImage); // Set the cropped image data to a hidden input field in the form
+            bs_modal.modal('hide'); // Close the modal
+        });
+
+        // Trigger file input click when button is clicked
+        document.getElementById('chooseImageButton').addEventListener('click', function() {
+            document.getElementById('imageInput').click();
+        });
+    </script>
+
+    <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function initializeQuill(selector) {
+                return new Quill(selector, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{
+                                font: []
+                            }, {
+                                size: []
+                            }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{
+                                color: []
+                            }, {
+                                background: []
+                            }],
+                            [{
+                                script: 'super'
+                            }, {
+                                script: 'sub'
+                            }],
+                            [{
+                                list: 'ordered'
+                            }, {
+                                list: 'bullet'
+                            }, {
+                                indent: '-1'
+                            }, {
+                                indent: '+1'
+                            }],
+                            ['direction', {
+                                align: []
+                            }],
+                            ['link', 'image', 'video'],
+                            ['clean']
+                        ]
+                    }
+                });
+            }
+
+            // Inisialisasi Quill untuk masing-masing editor
+            const descriptionEditor = initializeQuill('#full');
+            const notesEditor = initializeQuill('#full-nama');
+
+            // Mengatur nilai hidden input saat form disubmit
+            document.querySelector('form').onsubmit = function() {
+                document.querySelector('#satuan').value = descriptionEditor.root.innerHTML;
+                document.querySelector('#nama').value = notesEditor.root.innerHTML;
+
+                console.log('satuan:', descriptionEditor.root.innerHTML);
+                console.log('Catatan:', notesEditor.root.innerHTML);
+            };
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Choices for Kecamatan
+            var choicesKecamatan = new Choices('#kecamatan');
+
+            // Initialize Choices for Desa with multiple selection
+            var choicesDesa = new Choices('#desa', {
+                removeItemButton: true,
+                maxItemCount: -1, // Unlimited items
+                placeholder: true,
+                placeholderValue: 'Select Desa...',
+                searchResultLimit: 5,
+                renderChoiceLimit: 5
+            });
+
+            // Event listener for Kecamatan change
+            document.getElementById('kecamatan').addEventListener('change', function() {
+                var kecamatanId = this.value;
+
+                if (kecamatanId) {
+                    fetch(`/bencana/get-desa/${kecamatanId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear previous options
+                            choicesDesa.clearStore();
+
+                            // Add new options
+                            choicesDesa.setChoices(
+                                data.desaTerkait.map(desa => ({
+                                    value: desa.id,
+                                    label: desa.nama,
+                                    selected: false,
+                                    disabled: false
+                                })),
+                                'value',
+                                'label',
+                                false
+                            );
+                        })
+                        .catch(error => console.error('Error fetching desa:', error));
+                } else {
+                    // Clear options if no Kecamatan is selected
+                    choicesDesa.clearStore();
+                }
+            });
+        });
+    </script>
 @endpush
