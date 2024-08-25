@@ -55,7 +55,7 @@ class KerusakanController extends Controller
      */
     public function store(Request $request, $id)
     {
-        // dd($request->all());
+        dd($request->all());
         $bencana = Bencana::where('id', $id)->first();
         try {
             DB::beginTransaction();

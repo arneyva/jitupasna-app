@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriBencanaController;
 use App\Http\Controllers\KerugianController;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\SatuanController;
+use App\Models\HSD;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -65,4 +66,8 @@ Route::prefix('/satuan')->name('satuan.')->group(function () {
 Route::prefix('/hsd')->name('hsd.')->group(function () {
     Route::get('list', [HargaSatuanDasarController::class, 'index'])->name('index');
     Route::post('store', [HargaSatuanDasarController::class, 'store'])->name('store');
+});
+Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
+    $namaList = HSD::where('tipe', $tipe)->get(['id', 'nama', 'satuan', 'harga']);
+    return response()->json($namaList);
 });
