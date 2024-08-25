@@ -55,7 +55,7 @@ class KerusakanController extends Controller
      */
     public function store(Request $request, $id)
     {
-        dd($request->all());
+        // dd($request->all());
         $bencana = Bencana::where('id', $id)->first();
         try {
             DB::beginTransaction();
@@ -67,24 +67,27 @@ class KerusakanController extends Controller
             $kerusakan = new Kerusakan;
             $kerusakan->bencana_id = $bencana->id;
             $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
-            $kerusakan->kuantitas = $kerusakanRules['kuantitas'] ?? 1;
+            // $kerusakan->kuantitas = $kerusakanRules['kuantitas'] ?? 1;
             $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
             $kerusakan->save();
             // simpan detail kerusakan
             $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
-                $kuantitasItem = $detail['kuantitas_item'] ?? 1;
-                $subtotal = $detail['kuantitas'] * $detail['harga'] * $kuantitasItem;
+                $dataHsd = HSD::where('id', $detail['nama'])->first();
+                $kuantitasItem = $detail['kuantitas_item'] ?? 1; //untuk pekerja
+                $subtotal = $detail['kuantitas'] * $dataHsd->harga * $kuantitasItem;
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
-                    'tipe' => $detail['tipe'],
-                    'nama' => $detail['nama'],
-                    'kuantitas' => $detail['kuantitas'],
+                    'hsd_id' => $detail['nama'],
+                    // 'tipe' => $detail['tipe'],
+                    // 'nama' => $detail['nama'],
+                    'kuantitas_per_satuan' => $detail['kuantitas'], //kuantitas per satuan yang semua punya
                     'kuantitas_item' => $kuantitasItem,
-                    'satuan_id' => $detail['satuan_id'],
-                    'harga' => $detail['harga'],
+                    // 'satuan_id' => $detail['satuan_id'],
+                    // 'harga' => $detail['harga'],
+                    'harga' => $subtotal,
                     'created_at' => now(),
                 ];
             }
@@ -99,6 +102,7 @@ class KerusakanController extends Controller
 
             return redirect()->route('kerusakan.index')->with('success', 'Sale created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }

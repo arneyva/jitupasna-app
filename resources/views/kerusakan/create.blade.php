@@ -182,7 +182,7 @@
                         })
                         .catch(error => console.error('Error:', error));
 
-                    if (tipe == "2" || tipe == "3") {
+                    if (tipe == "2") {
                         if (tipe == "2") {
                             hargaLabel.textContent = 'Upah Tiap Satuan Dalam Rupiah';
                             JumlahKuantitasLabel.textContent = 'Jumlah Pekerja';
@@ -202,7 +202,7 @@
 
                         const KuantitasItemLabel = newDetail.querySelector(
                             `#label-kuantitasItem-${detailCount}`);
-                        KuantitasItemLabel.textContent = tipe == "2" ? 'Jumlah Hari' :
+                        KuantitasItemLabel.textContent = tipe == "2" ? 'Kuantias Berdasarkan Satuan' :
                             'Jumlah Berdasarkan Satuan';
                     } else {
                         hargaLabel.textContent = 'Harga Tiap Satuan Dalam Rupiah';

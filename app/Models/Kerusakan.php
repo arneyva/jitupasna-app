@@ -15,7 +15,7 @@ class Kerusakan extends Model
     protected $fillable = [
         'bencana_id',
         'kategori_kerusakan_id',
-        'kuantitas',
+        // 'kuantitas',
         'deskripsi',
         'BiayaKeseluruhan',
     ];
