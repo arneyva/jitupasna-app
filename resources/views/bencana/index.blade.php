@@ -20,7 +20,7 @@
                                     <th>Ref</th>
                                     <th>Bencana</th>
                                     <th>Tanggal</th>
-                                    <th>Lokasi</th>
+                                    <th>Lokasi (Kelurahan/Desa)</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -31,8 +31,9 @@
                                         <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td>
                                         <td class="text-bold-500">{{ $item->tanggal }}</td>
                                         <td>
+
                                             @foreach ($item->desa as $desa)
-                                                <li> Kelurahan/Desa {{ $desa->nama }}</li>
+                                                <li> {{ $desa->nama }}</li>
                                             @endforeach
                                         </td>
                                         <td>
