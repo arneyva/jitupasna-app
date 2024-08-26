@@ -13,6 +13,7 @@ class Kerugian extends Model
     protected $table = 'kerugian';
 
     protected $fillable = [
+        'Ref',
         'bencana_id',
         'tipe',
         'nilai_ekonomi',

@@ -244,7 +244,7 @@
                                             </div>
                                         </div>
                                     </div>
-{{--  --}}
+                                    {{--  --}}
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
@@ -293,88 +293,6 @@
 @endsection
 @push('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    {{-- <script>
-        var bs_modal = $('#modal');
-        var image = document.getElementById('image');
-        var cropper, reader, file;
-
-        $("body").on("change", ".image", function(e) {
-            var files = e.target.files;
-            var maxFileSizeInBytes = 10 * 1024 * 1024;
-            var allowedExtensions = ['jpg', 'jpeg', 'png'];
-
-            if (files && files.length > 0) {
-                file = files[0];
-
-                var fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    // Display an error message
-                    alert("Only .jpg, .jpeg, and .png files are allowed.");
-
-                    // Optionally, clear the file input
-                    $(this).val('');
-                    return; // Exit the function early
-                }
-
-                if (file.size > maxFileSizeInBytes) {
-                    // Display an error message
-                    alert("File size exceeds the maximum allowed size.");
-
-                    // Optionally, clear the file input
-                    $(this).val('');
-                    return; // Exit the function early
-                }
-
-
-                var done = function(url) {
-                    image.src = url;
-                    bs_modal.modal('show');
-                };
-
-
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onload = function(e) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-            // Reset the value of the file input to trigger change event even if the same file is selected again
-            $(this).val('');
-        });
-
-        bs_modal.on('shown.bs.modal', function() {
-            cropper = new Cropper(image, {
-                aspectRatio: 1,
-                viewMode: 1,
-                autoCropArea: 1,
-                dragMode: 'move',
-                preview: '.preview'
-            });
-        }).on('hidden.bs.modal', function() {
-            cropper.destroy();
-            cropper = null;
-        });
-
-        $("#crop").click(function() {
-            canvas = cropper.getCroppedCanvas();
-            var croppedImage = canvas.toDataURL(); // Get the cropped image as base64 data URL
-            $("#firstImage").attr("src",
-                croppedImage); // Set the src attribute of the image element on the main page
-            $("#croppedImageData").val(
-                croppedImage); // Set the cropped image data to a hidden input field in the form
-            bs_modal.modal('hide'); // Close the modal
-            // $("#mainPage").show(); // Show the submit button on the main page
-        });
-
-        document.getElementById('chooseImageButton').addEventListener('click', function() {
-            document.getElementById('imageInput').click();
-        })
-    </script> --}}
     <script>
         var bs_modal = $('#modal');
         var image = document.getElementById('image');

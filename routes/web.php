@@ -69,5 +69,10 @@ Route::prefix('/hsd')->name('hsd.')->group(function () {
 });
 Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
     $namaList = HSD::where('tipe', $tipe)->get(['id', 'nama', 'satuan', 'harga']);
+    // Format harga ke format Rupiah dengan "Rp" di depan
+    $namaList = $namaList->map(function ($item) {
+        $item->harga = 'Rp ' . number_format($item->harga, 2, ',', '.');
+        return $item;
+    });
     return response()->json($namaList);
 });

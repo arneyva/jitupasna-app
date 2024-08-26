@@ -12,12 +12,16 @@ class DetailKerusakan extends Model
 
     protected $table = 'detail_kerusakan';
 
-    protected $fillable = ['kerusakan_id','hsd_id', 'kuantitas_per_satuan', 'harga', 'kuantitas_item'];
+    protected $fillable = ['kerusakan_id', 'hsd_id', 'kuantitas_per_satuan', 'harga', 'kuantitas_item'];
 
     protected $dates = ['deleted_at'];
 
     public function satuan()
     {
         return $this->belongsTo(Satuan::class, 'satuan_id', 'id');
+    }
+    public function hsd()
+    {
+        return $this->belongsTo(HSD::class, 'hsd_id', 'id');
     }
 }
