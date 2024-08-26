@@ -49,7 +49,25 @@ class KerusakanController extends Controller
             'hsd' => $hsd,
         ]);
     }
+    public function getRef()
+    {
+        // Ambil data terakhir dari tabel bencana
+        $last = DB::table('kerusakan')->latest('id')->first();
 
+        if ($last) {
+            // Ambil referensi terakhir
+            $item = $last->Ref;
+            // Konversi nomor terakhir menjadi integer dan tambahkan 1
+            $nextNumber = intval($item) + 1;
+            // Format nomor dengan nol di depan, menjadi tiga digit
+            $code = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+        } else {
+            // Jika tidak ada data, mulai dari 001
+            $code = '001';
+        }
+
+        return $code;
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -60,21 +78,21 @@ class KerusakanController extends Controller
         try {
             DB::beginTransaction();
             $kerusakanRules = $request->validate([
-                'kategori_bangunan_id' => 'nullable',
-                'kuantitas' => 'nullable',
+                'kategori_bangunan_id' => 'required',
                 'deskripsi' => 'nullable',
             ]);
             $kerusakan = new Kerusakan;
             $kerusakan->bencana_id = $bencana->id;
             $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
             $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
+            $kerusakan->Ref = $this->getRef();
             $kerusakan->save();
             $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
                 $dataHsd = HSD::where('id', $detail['nama'])->first();
                 $kuantitasItem = $detail['kuantitas_item'] ?? 1; //untuk pekerja
-                $kuantitas = str_replace(',', '.', $detail['kuantitas']);
+                $kuantitas = str_replace(',', '.', $detail['kuantitas']); //untuk kuantitas persatuan
                 $subtotal = $kuantitas * $dataHsd->harga * $kuantitasItem;
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
@@ -93,10 +111,17 @@ class KerusakanController extends Controller
             $kerusakan->save();
             DB::commit();
 
-            return redirect()->route('kerusakan.index')->with('success', 'Sale created successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->route('kerusakan.index')->with('success', 'Data Kerusakan Berhasil Ditambahkan');
+            // } catch (\Illuminate\Validation\ValidationException $e) {
+            //     DB::rollBack();
+            //     return redirect()->back()->withErrors($e->errors())->withInput();
+            // }
+        } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->back()->withErrors($e->errors())->withInput();
+            // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
+            \Log::error('Error storing bencana: ' . $th->getMessage());
+
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
@@ -114,7 +139,7 @@ class KerusakanController extends Controller
     public function edit(string $id)
     {
         // dd($id);
-        $kerusakan = Kerusakan::with('detail')->findOrFail($id);
+        $kerusakan = Kerusakan::with('detail.hsd')->findOrFail($id);
         $bencana = Bencana::where('id', $kerusakan->bencana_id)->with(['kategori_bencana'])->first();
         $kategoribangunan = KategoriBangunan::query()->get();
         $satuan = Satuan::query()->get();
@@ -132,21 +157,15 @@ class KerusakanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         try {
             DB::beginTransaction();
             $request->validate([
                 'kategori_bangunan_id' => 'required|exists:kategori_bangunan,id',
-                'deskripsi' => 'required|string',
-                'details.*.nama' => 'required|string',
-                'details.*.satuan_id' => 'required|exists:satuan,id',
-                'details.*.harga' => 'required|numeric',
-                'details.*.kuantitas' => 'required|numeric',
-                // Jika ada field lain yang perlu divalidasi, tambahkan di sini
+                'deskripsi' => 'nullable|string',
             ]);
-
             // Dapatkan model kerusakan berdasarkan id
             $kerusakan = Kerusakan::with('detail')->findOrFail($id);
-
             // Perbarui data kerusakan
             $kerusakan->kategori_bangunan_id = $request->kategori_bangunan_id;
             $kerusakan->deskripsi = $request->deskripsi;
@@ -156,28 +175,19 @@ class KerusakanController extends Controller
             // Perbarui detail kerusakan
             foreach ($request->details as $index => $detail) {
                 $kerusakanDetail = $kerusakan->detail()->find($detail['id']);
-
-                // Jika detail ditemukan, perbarui detail tersebut
                 if ($kerusakanDetail) {
-                    $kerusakanDetail->nama = $detail['nama'];
-                    $kerusakanDetail->satuan_id = $detail['satuan_id'];
-                    $kerusakanDetail->harga = $detail['harga'];
-                    $kerusakanDetail->kuantitas = $detail['kuantitas'];
-
+                    $kuantitas = str_replace(',', '.', $detail['kuantitas']);
+                    $kerusakanDetail->kuantitas_per_satuan =  $kuantitas;
                     // Update fields based on 'tipe'
                     if ($kerusakanDetail->tipe == 2) {
-                        // $kerusakanDetail->kuantitas = $detail['kuantitas'];
                         $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
-                        // $kerusakanDetail->harga = $detail['harga'];
-                    } elseif ($kerusakanDetail->tipe == 3) {
-                        // $kerusakanDetail->kuantitas = $detail['jumlah_alat'];
-                        // $kerusakanDetail->kuantitas_item = $detail['jumlah_kuantitas'];
-                        $kerusakanDetail->kuantitas_item = $detail['kuantitas_item'];
+                    } else {
+                        $kerusakanDetail->kuantitas_item = 1;
                     }
-
-                    $kerusakanDetail->save();
                     // Hitung subtotal
-                    $subtotal = $detail['kuantitas'] * $detail['harga'] * ($detail['kuantitas_item'] ?? 1);
+                    $subtotal =  $kuantitas * $kerusakanDetail->hsd->harga * ($detail['kuantitas_item'] ?? 1);
+                    $kerusakanDetail->harga = $subtotal;
+                    $kerusakanDetail->save();
                     $biayaKeseluruhan += $subtotal;
                 }
             }

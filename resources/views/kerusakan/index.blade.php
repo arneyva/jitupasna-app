@@ -15,8 +15,8 @@
                             <thead>
                                 <tr>
                                     <th>Bencana Ref</th>
+                                    <th>Ref</th>
                                     <th>Kategori Bagunan</th>
-                                    <th>Kuantitas</th>
                                     <th>Estimasi Biaya Total</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -25,8 +25,8 @@
                                 @foreach ($kerusakan as $item)
                                     <tr>
                                         <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
+                                        <td>{{ $item->Ref }}</td>
                                         <td>{{ $item->kategori_bangunan->nama }}</td>
-                                        <td class="text-bold-500">{{ $item->kuantitas }}</td>
                                         <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
                                         <td>
                                             <div class="btn-group mb-1">
@@ -51,15 +51,6 @@
                                                             </svg>
                                                             Update Data
                                                         </a>
-                                                        {{-- <a href="{{ route('bencana.show', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="2rem"
-                                                                height="2rem" viewBox="0 0 24 24">
-                                                                <path fill="#5A8DEE"
-                                                                    d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0" />
-                                                            </svg>
-                                                            Detail
-                                                        </a> --}}
                                                     </div>
                                                 </div>
                                             </div>

@@ -3,6 +3,14 @@
     .row {
         margin-bottom: 20px;
     }
+
+    #quill-deskripsi {
+        width: 100% !important;
+        height: 20px !important;
+        min-height: 150px;
+        /* Sesuaikan dengan tinggi minimal yang Anda inginkan */
+        box-sizing: border-box;
+    }
 </style>
 @section('content')
     <section id="multiple-column-form">
@@ -48,10 +56,10 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-6">
                                         <div class="form-group">
                                             <label for="first-name-column">Tipe Bangunan</label>
-                                            <select class="choices form-select" name="kategori_bangunan_id">
+                                            <select class="choices form-select" name="kategori_bangunan_id" required>
                                                 <option selected disabled value="">{{ __('Pilih...') }}</option>
                                                 @foreach ($kategoribangunan as $item)
                                                     <option value="{{ $item->id }}"
@@ -62,18 +70,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-6">
                                         <div class="form-group">
                                             <label for="company-column">Deskripsi</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
+                                            <div id="quill-deskripsi" style="width: 100%;"></div>
+                                            <input type="hidden" id="deskripsi" name="deskripsi">
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div id="additional-details"></div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="button" id="add-detail-btn" class="btn btn-primary mr-1 mb-1">Tambah
-                                        Detail</button>
-                                </div> --}}
                                 <div id="additional-details"></div>
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="button" id="add-detail-btn" class="btn btn-primary">Tambah
@@ -82,6 +86,8 @@
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-secondary mr-1 mb-1 mt-2">Submit</button>
                                 </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -91,6 +97,63 @@
     </section>
 @endsection
 @push('script')
+    <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function initializeQuill(selector) {
+                return new Quill(selector, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{
+                                font: []
+                            }, {
+                                size: []
+                            }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{
+                                color: []
+                            }, {
+                                background: []
+                            }],
+                            [{
+                                script: 'super'
+                            }, {
+                                script: 'sub'
+                            }],
+                            [{
+                                list: 'ordered'
+                            }, {
+                                list: 'bullet'
+                            }, {
+                                indent: '-1'
+                            }, {
+                                indent: '+1'
+                            }],
+                            ['direction', {
+                                align: []
+                            }],
+                            // ['link', 'image', 'video'],
+                            ['clean']
+                        ]
+                    }
+                });
+            }
+
+            // Inisialisasi Quill untuk masing-masing editor
+            const descriptionEditor = initializeQuill('#quill-deskripsi');
+            const notesEditor = initializeQuill('#full-nama');
+
+            // Mengatur nilai hidden input saat form disubmit
+            document.querySelector('form').onsubmit = function() {
+                document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
+                document.querySelector('#nama').value = notesEditor.root.innerHTML;
+
+                console.log('satuan:', descriptionEditor.root.innerHTML);
+                console.log('Catatan:', notesEditor.root.innerHTML);
+            };
+        });
+    </script>
     <script>
         document.getElementById('add-detail-btn').addEventListener('click', function() {
             const detailCount = document.querySelectorAll('#additional-details .card').length;
@@ -104,7 +167,7 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="tipe-${detailCount}">Tipe</label>
-                                <select class="choices form-select tipe-select" name="details[${detailCount}][tipe]" id="tipe-${detailCount}">
+                                <select class="choices form-select tipe-select" name="details[${detailCount}][tipe]" id="tipe-${detailCount}" required>
                                     <option selected disabled value="">Pilih...</option>
                                     <option value="1">Bahan</option>
                                     <option value="2">Upah</option>
@@ -142,13 +205,13 @@
                         <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="harga-${detailCount}" id="label-harga-${detailCount}">Harga per Satuan</label>
-                                <input type="number" id="harga-${detailCount}" class="form-control harga" name="details[${detailCount}][harga]" readonly>
+                                <input type="text" id="harga-${detailCount}" class="form-control harga" name="details[${detailCount}][harga]" readonly>
                             </div>
                         </div>
                         <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="kuantitas-${detailCount}" id="label-JumlahKuantitas-${detailCount}">Jumlah Kuantitas</label>
-                                <input type="text" id="kuantitas-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas]">
+                                <input type="text" id="kuantitas-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas]" required>
                             </div>
                         </div>
                         <div class="col-md-3 col-12" id="kuantitas-item-container-${detailCount}"></div>
@@ -213,7 +276,7 @@
                     if (tipe == "2") {
                         if (tipe == "2") {
                             hargaLabel.textContent = 'Upah Tiap Satuan Dalam Rupiah';
-                            JumlahKuantitasLabel.textContent = 'Jumlah Pekerja';
+                            JumlahKuantitasLabel.textContent = 'Kuantias Berdasarkan Satuan';
                         } else if (tipe == "3") {
                             hargaLabel.textContent = 'Harga Tiap Satuan Dalam Rupiah';
                             JumlahKuantitasLabel.textContent = 'Jumlah Alat';
@@ -223,14 +286,14 @@
                             kuantitasItemContainer.innerHTML = `
                             <div class="form-group">
                                 <label for="kuantitas_item-${detailCount}" id="label-kuantitasItem-${detailCount}">Jumlah Kuantitas Item</label>
-                                <input type="number" id="kuantitas_item-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas_item]">
+                                <input type="number" id="kuantitas_item-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas_item]" required>
                             </div>
                         `;
                         }
 
                         const KuantitasItemLabel = newDetail.querySelector(
                             `#label-kuantitasItem-${detailCount}`);
-                        KuantitasItemLabel.textContent = tipe == "2" ? 'Kuantias Berdasarkan Satuan' :
+                        KuantitasItemLabel.textContent = tipe == "2" ? 'Jumlah Pekerja' :
                             'Jumlah Berdasarkan Satuan';
                     } else {
                         hargaLabel.textContent = 'Harga Tiap Satuan Dalam Rupiah';
