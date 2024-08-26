@@ -18,14 +18,18 @@
                                 <tr>
                                     <th>Bencana Ref</th>
                                     <th>Bencana</th>
-                                    <th>Lokasi</th>
+                                    <th>Lokasi </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>{{ $bencana->Ref }}</td>
                                     <td>{{ $bencana->kategori_bencana->nama }}</td>
-                                    <td>{{ $bencana->lokasi }}</td>
+                                    <td>
+                                        @foreach ($bencana->desa as $desa)
+                                            <li> {{ $desa->nama }}</li>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

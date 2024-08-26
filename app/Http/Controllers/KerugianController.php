@@ -30,7 +30,7 @@ class KerugianController extends Controller
      */
     public function create($id)
     {
-        $bencana = Bencana::where('id', $id)->with(['kategori_bencana'])->first();
+        $bencana = Bencana::where('id', $id)->with(['kategori_bencana','desa'])->first();
         // $kategoriBangunan = KategoriBangunan::query()->get();
 
         // dd($kategoriBangunan);
