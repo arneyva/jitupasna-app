@@ -36,7 +36,7 @@ class KerusakanController extends Controller
      */
     public function create($id)
     {
-        $bencana = Bencana::where('id', $id)->first();
+        $bencana = Bencana::where('id', $id)->with(['kategori_bencana', 'desa'])->first();
         $kategoriBangunan = KategoriBangunan::query()->get();
         $satuan = Satuan::query()->get();
         $hsd = HSD::query()->get();
@@ -67,33 +67,26 @@ class KerusakanController extends Controller
             $kerusakan = new Kerusakan;
             $kerusakan->bencana_id = $bencana->id;
             $kerusakan->kategori_bangunan_id = $kerusakanRules['kategori_bangunan_id'];
-            // $kerusakan->kuantitas = $kerusakanRules['kuantitas'] ?? 1;
             $kerusakan->deskripsi = $kerusakanRules['deskripsi'];
             $kerusakan->save();
-            // simpan detail kerusakan
             $biayaKeseluruhan = 0;
             $details_kerusakan = [];
             foreach ($request->details as $detail) {
                 $dataHsd = HSD::where('id', $detail['nama'])->first();
                 $kuantitasItem = $detail['kuantitas_item'] ?? 1; //untuk pekerja
-                $subtotal = $detail['kuantitas'] * $dataHsd->harga * $kuantitasItem;
+                $kuantitas = str_replace(',', '.', $detail['kuantitas']);
+                $subtotal = $kuantitas * $dataHsd->harga * $kuantitasItem;
                 $biayaKeseluruhan += $subtotal;
                 $details_kerusakan[] = [
                     'kerusakan_id' => $kerusakan->id,
                     'hsd_id' => $detail['nama'],
-                    // 'tipe' => $detail['tipe'],
-                    // 'nama' => $detail['nama'],
-                    'kuantitas_per_satuan' => $detail['kuantitas'], //kuantitas per satuan yang semua punya
+                    'kuantitas_per_satuan' => $kuantitas, //kuantitas per satuan yang semua punya
                     'kuantitas_item' => $kuantitasItem,
-                    // 'satuan_id' => $detail['satuan_id'],
-                    // 'harga' => $detail['harga'],
                     'harga' => $subtotal,
                     'created_at' => now(),
                 ];
             }
-            // dd($biayaKeseluruhan);
             $GrandTotal = $biayaKeseluruhan * ($kerusakanRules['kuantitas'] ?? 1);
-            // dd($request->all());
             DetailKerusakan::insert($details_kerusakan); //memasukan data ke database
             // Perbarui kerusakan dengan total biaya keseluruhan
             $kerusakan->BiayaKeseluruhan = $GrandTotal;

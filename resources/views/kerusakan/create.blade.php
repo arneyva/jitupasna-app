@@ -9,6 +9,33 @@
         <div class="row match-height">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">Informasi Bencana</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Bencana Ref</th>
+                                    <th>Bencana</th>
+                                    <th>Lokasi </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ $bencana->Ref }}</td>
+                                    <td>{{ $bencana->kategori_bencana->nama }}</td>
+                                    <td>
+                                        @foreach ($bencana->desa as $desa)
+                                            <li> {{ $desa->nama }}</li>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
                     <form class="form" id="kerusakan-form" action="{{ route('kerusakan.store', ['id' => $bencana->id]) }}"
                         method="POST">
                         @csrf
@@ -121,7 +148,7 @@
                         <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="kuantitas-${detailCount}" id="label-JumlahKuantitas-${detailCount}">Jumlah Kuantitas</label>
-                                <input type="number" id="kuantitas-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas]">
+                                <input type="text" id="kuantitas-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas]">
                             </div>
                         </div>
                         <div class="col-md-3 col-12" id="kuantitas-item-container-${detailCount}"></div>
@@ -129,6 +156,7 @@
                 </div>
             </div>
         `;
+
 
             document.getElementById('additional-details').appendChild(newDetail);
 
@@ -251,6 +279,15 @@
             icon.addEventListener('click', function() {
                 icon.closest('.card').remove();
             });
+        });
+        document.getElementById(`kuantitas-${detailCount}`).addEventListener('blur', function(e) {
+            let value = this.value.replace(',', '.');
+            if (!isNaN(value) && parseFloat(value) === Number(value)) {
+                this.value = parseFloat(value).toFixed(
+                    2); // Convert to a number with two decimal places
+            } else {
+                alert("Please enter a valid value.");
+            }
         });
     </script>
 @endpush
