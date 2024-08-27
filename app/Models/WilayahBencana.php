@@ -11,5 +11,9 @@ class WilayahBencana extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'wilayah_bencana';
 
-    protected $fillable = ['bencana_id','desa_id'];
+    protected $fillable = ['bencana_id', 'desa_id'];
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
 }

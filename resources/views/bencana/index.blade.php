@@ -28,7 +28,18 @@
                                 @foreach ($bencana as $item)
                                     <tr>
                                         <td>{{ $item->Ref }}</td>
-                                        <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img class="rounded img-fluid avatar-40 me-3 bg-soft-primary"
+                                                    {{-- src="{{ asset('hopeui/html/assets/images/products/' . $item['image']) }}" --}}
+                                                    src="{{ asset('/frontend/dist/assets/images/avatar/' . $item['gambar']) }}"
+                                                    alt="profile" style="width: 100px; height: 100px; margin-right: 10px;">
+                                                <div class="d-flex flex-column">
+                                                    <h6 class="mb-0">{{ $item->kategori_bencana->nama }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        {{-- <td class="text-bold-500">{{ $item->kategori_bencana->nama }}</td> --}}
                                         <td class="text-bold-500">{{ $item->tanggal }}</td>
                                         <td>
 

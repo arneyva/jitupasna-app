@@ -8,6 +8,7 @@ use App\Models\KategoriBencana;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class BencanaController extends Controller
 {
@@ -28,15 +29,6 @@ class BencanaController extends Controller
             'kategoribencana' => $kategoriBencana,
         ]);
     }
-    // public function getDesa(Request $request, $id)
-    // {
-    //     $kecamatan = Kecamatan::findOrFail($id);
-    //     $desaTerkait = Desa::where('kecamatan_id', $kecamatan->id)->get();
-
-    //     return response()->json([
-    //         'desaTerkait' => $desaTerkait,
-    //     ]);
-    // }
     public function getDesaByKecamatan($kecamatan_id)
     {
         $desa = Desa::where('kecamatan_id', $kecamatan_id)->get();
@@ -94,6 +86,24 @@ class BencanaController extends Controller
                 'deskripsi' => 'nullable',
                 'gambar' => 'nullable',
             ]);
+            //handle image
+            if ($request->input('avatar') !== null) {
+
+                $avatarBase64 = $request->input('avatar');
+
+                $avatarBinaryData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $avatarBase64));
+                $filename = $request['name'] . '_' . uniqid() . '.png';
+
+                $tempFilePath = public_path('/frontend/dist/assets/images/avatar/temp/' . $filename);
+                file_put_contents($tempFilePath, $avatarBinaryData);
+
+                $image_resize = Image::make($tempFilePath);
+                $image_resize->resize(305, 305);
+                $image_resize->save(public_path('/frontend/dist/assets/images/avatar/' . $filename));
+                unlink($tempFilePath);
+            } else {
+                $filename = 'no-image.png';
+            }
             $bencana = Bencana::create([
                 'Ref' => $this->getRef(),
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
@@ -102,7 +112,7 @@ class BencanaController extends Controller
                 'latitude' => $bencaRules['latitude'],
                 'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
-                'gambar' => $bencaRules['image'] ?? null,
+                'gambar' => $filename,
             ]);
             // Mengambil array ID desa
             $desaIds = $bencaRules['desa_ids'] ?? [];
@@ -119,12 +129,17 @@ class BencanaController extends Controller
             DB::commit();
 
             return redirect()->route('bencana.index')->with('success', 'Bencana Sukses Ditambahkan');
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: ' . $th->getMessage());
+            // } catch (\Throwable $th) {
+            //     DB::rollBack();
+            //     // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
+            //     \Log::error('Error storing bencana: ' . $th->getMessage());
 
-            return redirect()->back()->with('error', $th->getMessage());
+            //     return redirect()->back()->with('error', $th->getMessage());
+            // }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors($e->errors())->withInput();
         }
     }
 
@@ -154,10 +169,18 @@ class BencanaController extends Controller
     {
         $bencana = Bencana::findOrFail($id);
         $kategoriBencana = KategoriBencana::all();
-
+        $kecamatan = Kecamatan::query()->where('deleted_at', '=', null)->get();
+        // $selectedKecamatan = Bencana::find($id)->kecamatan_id; // atau bagaimana cara Anda mendapatkan kecamatan terkait
+        // $selectedDesaIds = Bencana::find($id)->desa->pluck('id')->toArray(); // array ID desa yang dipilih
+        $desaTerkait = Desa::where('kecamatan_id', $bencana->kecamatan_id)->get(); // Desa berdasarkan Kecamatan yang sudah dipilih
+        $selectedDesaIds = $bencana->desa->pluck('id')->toArray(); // ID desa yang sudah dipilih
+        // dd($selectedDesaIds);
         return view('bencana.edit', [
             'bencana' => $bencana,
             'kategoribencana' => $kategoriBencana,
+            'kecamatan' => $kecamatan,
+            'desaTerkait' => $desaTerkait,
+            'selectedDesaIds' => $selectedDesaIds
         ]);
     }
 
