@@ -95,8 +95,9 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" action="{{ route('bencana.store') }}" method="POST">
+                            <form class="form" action="{{ route('bencana.update', ['id' => $bencana->id]) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                @method('PATCH')
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
@@ -205,7 +206,7 @@
                                                             style="border: 1px dashed rgb(94, 87, 87);">
                                                             <div
                                                                 class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
-                                                                <img src="/hopeui/html/assets/images/products/no-image.png"
+                                                                <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana->gambar) }}"
                                                                     id="firstImage" alt="profile-pic"
                                                                     class="theme-color-default-img profile-pic rounded avatar-100">
                                                             </div>

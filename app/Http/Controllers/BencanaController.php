@@ -152,7 +152,7 @@ class BencanaController extends Controller
         $totalBiayaPerbaikan = $bencana->kerusakan->sum('BiayaKeseluruhan');
         $totalKerugian = $bencana->kerugian->sum('BiayaKeseluruhan');
         $kebutuhan = $totalBiayaPerbaikan + $totalKerugian;
-
+        // dd($kebutuhan);
         return view('bencana.show', [
             'bencana' => $bencana,
             'totalKuantitas' => $totalKuantitas,
@@ -193,18 +193,48 @@ class BencanaController extends Controller
 
             $bencaRules = $request->validate([
                 'kategori_bencana_id' => 'required',
-                'lokasi' => 'required',
-                'deskripsi' => 'required',
-                'tgl_mulai' => 'required',
-                'tgl_selesai' => 'required',
+                'tanggal' => 'required',
+                'kecamatan_id' => 'required',
+                'desa_ids' => 'array',
+                'latitude' => 'nullable',
+                'longitude' => 'nullable',
+                'deskripsi' => 'nullable',
+                'gambar' => 'nullable',
             ]);
+            $currentAvatar = $bencana->gambar;
+            if ($request->avatar != null) {
 
+                $avatarBase64 = $request->input('avatar');
+
+                $avatarBinaryData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $avatarBase64));
+                $filename = $request['name'] . '_' . uniqid() . '.png';
+
+                $tempFilePath = public_path('/frontend/dist/assets/images/avatar/temp/' . $filename);
+                file_put_contents($tempFilePath, $avatarBinaryData);
+
+                $image_resize = Image::make($tempFilePath);
+                $image_resize->resize(305, 305);
+                $image_resize->save(public_path('/frontend/dist/assets/images/avatar/' . $filename));
+                unlink($tempFilePath);
+
+                $path = public_path('/frontend/dist/assets/images/avatar/');
+                $currentPhotoPath = $path . $currentAvatar;
+                if (file_exists($currentPhotoPath)) {
+                    if ($currentAvatar != 'no-image.png') {
+                        @unlink($currentPhotoPath);
+                    }
+                }
+            } else {
+                $filename = $currentAvatar;
+            }
             $bencana->update([
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
-                'lokasi' => $bencaRules['lokasi'],
+                'tanggal' => $bencaRules['tanggal'],
+                'kecamatan_id' => $bencaRules['kecamatan_id'],
+                'latitude' => $bencaRules['latitude'],
+                'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
-                'tgl_mulai' => $bencaRules['tgl_mulai'],
-                'tgl_selesai' => $bencaRules['tgl_selesai'],
+                'gambar' => $filename,
             ]);
 
             DB::commit();

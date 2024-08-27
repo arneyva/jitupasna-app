@@ -95,7 +95,8 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" action="{{ route('bencana.store') }}" method="POST">
+                            <form class="form" action="{{ route('bencana.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 col-12">
