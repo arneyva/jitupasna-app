@@ -65,7 +65,7 @@
                                     <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="#" method="POST">
+                            <form action="{{ route('hsd.store') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
                                     <label>Nama: </label>
@@ -78,12 +78,12 @@
                                     </div>
                                     <label>Nama: </label>
                                     <div class="form-group">
-                                        <div id="full-nama"></div>
+                                        <div id="quill-nama"></div>
                                         <input type="hidden" name="nama" id="nama">
                                     </div>
                                     <label>Satuan: </label>
                                     <div class="form-group">
-                                        <div id="full"></div>
+                                        <div id="quill-satuan"></div>
                                         <input type="hidden" name="satuan" id="satuan">
                                     </div>
                                     <label>Harga: </label>
@@ -146,84 +146,87 @@
         </div>
     </div>
 @endsection
-<script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function initializeQuill(selector) {
-            return new Quill(selector, {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{
-                            font: []
-                        }, {
-                            size: []
-                        }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{
-                            color: []
-                        }, {
-                            background: []
-                        }],
-                        [{
-                            script: 'super'
-                        }, {
-                            script: 'sub'
-                        }],
-                        [{
-                            list: 'ordered'
-                        }, {
-                            list: 'bullet'
-                        }, {
-                            indent: '-1'
-                        }, {
-                            indent: '+1'
-                        }],
-                        // ['direction', {
-                        //     align: []
-                        // }],
-                        // ['link', 'image', 'video'],
-                        ['clean']
-                    ]
-                }
-            });
-        }
+@push('script')
+    <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function initializeQuill(selector) {
+                return new Quill(selector, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{
+                                font: []
+                            }, {
+                                size: []
+                            }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{
+                                color: []
+                            }, {
+                                background: []
+                            }],
+                            [{
+                                script: 'super'
+                            }, {
+                                script: 'sub'
+                            }],
+                            [{
+                                list: 'ordered'
+                            }, {
+                                list: 'bullet'
+                            }, {
+                                indent: '-1'
+                            }, {
+                                indent: '+1'
+                            }],
+                            // ['direction', {
+                            //     align: []
+                            // }],
+                            // ['link', 'image', 'video'],
+                            ['clean']
+                        ]
+                    }
+                });
+            }
 
-        // Inisialisasi Quill untuk masing-masing editor
-        const descriptionEditor = initializeQuill('#full');
-        const notesEditor = initializeQuill('#full-nama');
+            // Inisialisasi Quill untuk masing-masing editor
+            const namaEditor = initializeQuill('#quill-nama');
+            const satuanEditor = initializeQuill('#quill-satuan');
 
-        // Mengatur nilai hidden input saat form disubmit
-        document.querySelector('form').onsubmit = function() {
-            document.querySelector('#satuan').value = descriptionEditor.root.innerHTML;
-            document.querySelector('#nama').value = notesEditor.root.innerHTML;
+            // Mengatur nilai hidden input saat form disubmit
+            document.querySelector('form').onsubmit = function() {
+                document.querySelector('#nama').value = namaEditor.root.innerHTML;
+                document.querySelector('#satuan').value = satuanEditor.root.innerHTML;
 
-            console.log('satuan:', descriptionEditor.root.innerHTML);
-            console.log('Catatan:', notesEditor.root.innerHTML);
-        };
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Inisialisasi Cleave.js untuk input harga
-        const cleave = new Cleave('#harga', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            delimiter: '.',
-            numeralDecimalMark: ',',
-            prefix: 'Rp '
+                console.log('satuan:', descriptionEditor.root.innerHTML);
+                console.log('Catatan:', notesEditor.root.innerHTML);
+            };
         });
+    </script>
 
-        // Fungsi untuk mengupdate nilai tersembunyi sebelum formulir disubmit
-        document.querySelector('form').onsubmit = function() {
-            // Ambil nilai yang diformat dari Cleave
-            const formattedValue = cleave.getRawValue();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi Cleave.js untuk input harga
+            const cleave = new Cleave('#harga', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                delimiter: '.',
+                numeralDecimalMark: ',',
+                prefix: 'Rp '
+            });
 
-            // Simpan nilai asli (numerik) ke input tersembunyi
-            document.querySelector('#harga-hidden').value = formattedValue;
+            // Fungsi untuk mengupdate nilai tersembunyi sebelum formulir disubmit
+            document.querySelector('form').onsubmit = function() {
+                // Ambil nilai yang diformat dari Cleave
+                const formattedValue = cleave.getRawValue();
 
-            console.log(formattedValue); // Debug untuk memastikan nilai asli
-        };
-    });
-</script>
+                // Simpan nilai asli (numerik) ke input tersembunyi
+                document.querySelector('#harga-hidden').value = formattedValue;
+
+                console.log(formattedValue); // Debug untuk memastikan nilai asli
+            };
+        });
+    </script>
+@endpush

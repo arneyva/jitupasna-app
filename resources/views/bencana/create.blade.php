@@ -179,7 +179,7 @@
                                                         style="border: 1px dashed rgb(94, 87, 87);">
                                                         <div
                                                             class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
-                                                            <img src="/hopeui/html/assets/images/products/no-image.png"
+                                                            <img src="/frontend/dist/assets/images/avatar/no-image.png"
                                                                 id="firstImage" alt="profile-pic"
                                                                 class="theme-color-default-img profile-pic rounded avatar-100">
                                                         </div>

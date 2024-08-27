@@ -6,7 +6,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data kerugian Akibat Bencana</h4>
-                    {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
@@ -14,6 +13,7 @@
                             <thead>
                                 <tr>
                                     <th>Bencana Ref</th>
+                                    <th>Ref</th>
                                     <th>Sektor Terdampak</th>
                                     <th>Jumlah Terdampak</th>
                                     <th>Estimasi Nilai Ekonomi</th>
@@ -24,6 +24,7 @@
                                 @foreach ($kerugian as $item)
                                     <tr>
                                         <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
+                                        <td class="text-bold-500">{{ $item->Ref }}</td>
                                         <td>
                                             @if ($item->tipe == 1)
                                                 <h6>Pariwisata</h6>

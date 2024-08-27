@@ -17,7 +17,7 @@ class HargaSatuanDasarController extends Controller
             'hsd' => $hsd
         ]);
     }
-    public function storeBahan(Request $request)
+    public function store(Request $request)
     {
         dd($request->all());
         try {
@@ -42,7 +42,7 @@ class HargaSatuanDasarController extends Controller
             ]);
             DB::commit();
 
-            return redirect()->route('hsd.bahan.index')->with('success', 'Bahan Sukses Ditambahkan');
+            return redirect()->route('hsd.bahan.index')->with('success', 'HSD Sukses Ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
 

@@ -25,7 +25,11 @@
                                 <tr>
                                     <td>{{ $bencana->Ref }}</td>
                                     <td>{{ $bencana->kategori_bencana->nama }}</td>
-                                    <td>{{ $bencana->lokasi }}</td>
+                                    <td>
+                                        @foreach ($bencana->desa as $desa)
+                                            <li> {{ $desa->nama }}</li>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -41,9 +45,6 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
-                                </div>
                                 <div class="card" style="border: 4px solid #ddd; margin-top: 10px">
                                     <div class="card-content">
                                         <div class="card-body">
@@ -60,8 +61,11 @@
                                                 <div class="col-md-3 col-12">
                                                     <div class="form-group">
                                                         <label for="nama-0">Nilai Ekonomi Rata-Rata</label>
-                                                        <input type="number" id="nama-0" class="form-control"
+                                                        <input type="text" id="nilai-ekonomi" class="form-control"
                                                             placeholder="" name="nilai_ekonomi"
+                                                            value="{{ number_format($kerugian->nilai_ekonomi, 0, ',', '.') }}">
+                                                        <input type="hidden" id="nilai-ekonomi-hidden"
+                                                            name="nilai_ekonomi_hidden"
                                                             value="{{ $kerugian->nilai_ekonomi }}">
                                                     </div>
                                                 </div>
@@ -85,7 +89,8 @@
                                                         <label for="kuantitas-0">Jumlah Terkena Dampak</label>
                                                         <input type="number" id="kuantitas-0" class="form-control"
                                                             placeholder="" name="kuantitas"
-                                                            value="{{ $kerugian->kuantitas }}">
+                                                            value="{{ $kerugian->kuantitas }}" step="0.01"
+                                                            min="0">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-12">
@@ -98,7 +103,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- @endforeach --}}
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -108,7 +117,29 @@
     </section>
 @endsection
 @push('script')
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cleave = new Cleave('#nilai-ekonomi', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                prefix: 'Rp ',
+                rawValueTrimPrefix: true, // Trim the prefix when sending the data to the server
+                numeralDecimalMark: ',',
+                delimiter: '.',
+            });
+
+            // Update hidden input with raw value
+            const hiddenInput = document.getElementById('nilai-ekonomi-hidden');
+            hiddenInput.value = cleave.getRawValue();
+
+            // Listen for changes and update the hidden input field
+            document.getElementById('nilai-ekonomi').addEventListener('input', function() {
+                hiddenInput.value = cleave.getRawValue();
+            });
+        });
+    </script>
+    {{-- <script>
         document.getElementById('add-detail-btn').addEventListener('click', function() {
             // Mendapatkan jumlah detail kerusakan yang ada saat ini
             const detailCount = document.querySelectorAll('#additional-details .card').length;
@@ -127,7 +158,7 @@
                             <option selected disabled value="">{{ __('Pilih...') }}</option>
             
                             <option value="2">Pertanian</option>
-                         
+                        
                         </select>
                     </div>
                 </div>
@@ -195,5 +226,5 @@
                 icon.closest('.card').remove();
             });
         });
-    </script>
+    </script> --}}
 @endpush

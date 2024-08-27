@@ -201,7 +201,7 @@ class BencanaController extends Controller
                 'deskripsi' => 'nullable',
                 'gambar' => 'nullable',
             ]);
-            $currentAvatar = $bencana->gambar;
+            $currentAvatar = $bencana->gambar ?? 'no-image.png';
             if ($request->avatar != null) {
 
                 $avatarBase64 = $request->input('avatar');
