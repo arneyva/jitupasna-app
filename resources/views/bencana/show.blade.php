@@ -6,95 +6,80 @@
 </style>
 @section('content')
     <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Detail Data Bencana</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="first-name-column">Kategori Bencana</label>
-                                        <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                            name="lokasi" readonly value="{{ $bencana->kategori_bencana->nama }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="last-name-column">Lokasi Kejadian</label>
-                                        <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                            name="lokasi" readonly value="{{ $bencana->lokasi }}">
-                                    </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" data-aos="fade-up" data-aos-delay="800">
+                            <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
+                                <div class="header-title">
+                                    <h4 class="card-title">{{ __('Informasi Bencana') }}</h4>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="last-name-column">Tanggal Mulai Bencana</label>
-                                        <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                            name="tgl_mulai" readonly value="{{ $bencana->tgl_mulai }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="last-name-column">Tanggal Berakhir Bencana</label>
-                                        <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                            name="tgl_selesai" readonly value="{{ $bencana->tgl_selesai }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="company-column">Deskripsi</label>
-                                    {{-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi" readonly> {{!! $bencana->deskripsi !! }}</textarea> --}}
-                                    <div class="form-control" style="height: auto;">{!! $bencana->deskripsi !!}</div>
-
-                                </div>
-                            </div>
-                            {{-- <div class="row">
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="first-name-column">Jumlah Bangunan Rusak</label>
-                                        <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                            name="lokasi" readonly value="{{ $totalKuantitas }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="last-name-column">Estimasi Biaya Perbaikan</label>
-                                        <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                            name="lokasi" readonly
-                                            value="{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }}">
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <div class="col-md-6 col-lg-6">
-                                <div class="card">
-                                    <table class="table mb-0 mt-1" role="grid">
+                            <div class="card-body">
+                                <div class="table-responsive mt-4">
+                                    <table id="basic-table" class="table table-striped mb-0" role="grid">
                                         <tbody>
                                             <tr>
-                                                <th>{{ __('Kerusakan') }}</th>
-                                                <td>{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }} ~
-                                                    {{ $totalKuantitas }} Bangunan</td>
+                                                <td>{{ __('Ref') }}</td>
+                                                <th>{{ $bencana->Ref }}</th>
                                             </tr>
                                             <tr>
-                                                <th>{{ __('Kerugian') }}</th>
-                                                <td>{{ 'Rp ' . number_format($totalKerugian, 2, ',', '.') }}</td>
+                                                <td>{{ __('Bencana') }}</td>
+                                                <th>{{ $bencana->kategori_bencana->nama }}</th>
                                             </tr>
                                             <tr>
-                                                <th>{{ __('Kebutuhan') }}</th>
-                                                <td>{{ 'Rp ' . number_format($kebutuhan, 2, ',', '.') }}</td>
+                                                <td>{{ __('Tanggal') }}</td>
+                                                <th>{{ $bencana->tanggal }}</th>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="card" data-aos="fade-up" data-aos-delay="800">
+                            <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
+                                <div class="header-title">
+                                    <h4 class="card-title">{{ __('Deskripsi') }}</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {!! $bencana->deskripsi !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <div class="card credit-card-widget" data-aos="fade-up" data-aos-delay="900">
+                    <div class="pb-4 border-0 card-header">
+                        <div class="p-4 border border-white rounded primary-gradient-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana['gambar']) }}"
+                                    alt="" style="width: 100%;height: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table table-striped mb-0" role="grid">
+                        <tbody>
+                            <tr>
+                                <td>{{ __('Kerusakan') }}</td>
+                                <th>{{ 'Rp ' . number_format($totalBiayaPerbaikan, 2, ',', '.') }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Kerugian') }}</td>
+                                <th>{{ 'Rp ' . number_format($totalKerugian, 2, ',', '.') }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Kebutuhan') }}</td>
+                                <th>{{ 'Rp ' . number_format($kebutuhan, 2, ',', '.') }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
