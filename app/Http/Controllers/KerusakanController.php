@@ -112,15 +112,8 @@ class KerusakanController extends Controller
             DB::commit();
 
             return redirect()->route('kerusakan.index')->with('success', 'Data Kerusakan Berhasil Ditambahkan');
-            // } catch (\Illuminate\Validation\ValidationException $e) {
-            //     DB::rollBack();
-            //     return redirect()->back()->withErrors($e->errors())->withInput();
-            // }
         } catch (\Throwable $th) {
             DB::rollBack();
-            // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            \Log::error('Error storing bencana: ' . $th->getMessage());
-
             return redirect()->back()->with('error', $th->getMessage());
         }
     }

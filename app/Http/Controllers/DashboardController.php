@@ -15,7 +15,7 @@ class DashboardController extends Controller
 
         // Mengambil data bencana dengan kategori bencana
         $bencanaData = Bencana::with(['kerugian', 'kerusakan', 'kategori_bencana'])
-            ->whereBetween('tgl_mulai', [$startOfYear, $endOfYear])
+            ->whereBetween('tanggal', [$startOfYear, $endOfYear])
             ->get();
 
         // Mengelompokkan bencana berdasarkan kategori

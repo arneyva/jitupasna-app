@@ -41,39 +41,17 @@
                         @csrf
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title mb-0">Tambah Data Kerugian</h4>
-
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                {{-- <div class="row">
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Kategori Bencana</label>
-                                            <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                                name="lokasi" readonly value="{{ $bencana->kategori_bencana->nama }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="last-name-column">Lokasi Kejadian</label>
-                                            <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                                name="lokasi" readonly value="{{ $bencana->lokasi }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="last-name-column">Estimasi Waktu</label>
-                                            <input type="text" id="last-name-column" class="form-control" placeholder=""
-                                                name="lokasi" readonly value="{{ $jumlahHari }} Hari">
-                                        </div>
-                                    </div>
-                                </div> --}}
+                                <div id="additional-details"></div>
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="button" id="add-detail-btn" class="btn btn-primary mr-1 mb-1">Tambah
                                         Detail</button>
                                     <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
                                 </div>
-                                <div id="additional-details"></div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -83,6 +61,7 @@
     </section>
 @endsection
 @push('script')
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script>
         document.getElementById('add-detail-btn').addEventListener('click', function() {
             // Mendapatkan jumlah detail kerusakan yang ada saat ini
@@ -109,7 +88,8 @@
                 <div class="col-md-3 col-12">
                     <div class="form-group">
                         <label for="nama-${detailCount}">Nilai Ekonomi Rata-Rata</label>
-                        <input type="number" id="nama-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][nilai_ekonomi]">
+                        <input type="text" id="nilai-ekonomi-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][nilai_ekonomi]">
+                          <input type="hidden" id="nilai-ekonomi-hidden-${detailCount}" name="details[${detailCount}][nilai_ekonomi_hidden]">
                     </div>
                 </div>
                 <div class="col-md-3 col-12">
@@ -129,7 +109,7 @@
                 <div class="col-md-2 col-12">
                     <div class="form-group">
                         <label for="kuantitas-${detailCount}">Jumlah Terkena Dampak</label>
-                        <input type="number" id="kuantitas-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][kuantitas]">
+                        <input type="number" id="kuantitas-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][kuantitas]" step="0.01" min="0">
                     </div>
                 </div>
                 <div class="col-md-1 col-12 d-flex align-items-center">
@@ -158,6 +138,20 @@
             document.getElementById('additional-details').appendChild(newDetail);
             new Choices(`#tipe-${detailCount}`);
             new Choices(`#satuan_id-${detailCount}`);
+            // Initialize Cleave.js on the newly added field
+            new Cleave(`#nilai-ekonomi-${detailCount}`, {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                prefix: 'Rp ',
+                rawValueTrimPrefix: true, // Trim the prefix when sending the data to the server
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                onValueChanged: function(e) {
+                    // Set the raw value to the hidden input
+                    document.getElementById(`nilai-ekonomi-hidden-${detailCount}`).value = e.target
+                        .rawValue;
+                }
+            });
             // Tambahkan event listener untuk menghapus baris ketika ikon diklik
             newDetail.querySelector('.delete-icon').addEventListener('click', function() {
                 newDetail.remove();
