@@ -76,3 +76,4 @@ Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
     });
     return response()->json($namaList);
 });
+Route::post('/upload-cropped-image', 'ImageController@uploadCroppedImage');

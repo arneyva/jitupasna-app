@@ -6,16 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JITUPASNA</title>
 
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/css/bootstrap.css') }}">
-
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/chartjs/Chart.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('frontend/dist/assets/images/favicon.svg') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/choices.js/choices.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/quill/quill.bubble.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/quill/quill.snow.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+
+    <!-- Custom styles that might be added from other views -->
+    @stack('style')
 </head>
 
 <body>
@@ -29,6 +32,11 @@
             {{-- @include('layouts.footer') --}}
         </div>
     </div>
+
+    <!-- jQuery should be loaded before Bootstrap and any script that uses it -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS (depends on jQuery) -->
     <script src="{{ asset('frontend/dist/assets/js/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('frontend/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('frontend/dist/assets/js/app.js') }}"></script>
@@ -36,12 +44,17 @@
     <script src="{{ asset('frontend/dist/assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('frontend/dist/assets/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('frontend/dist/assets/js/main.js') }}"></script>
-    {{-- <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('frontend/dist/assets/js/pages/form-editor.js') }}"></script> --}}
-    <!-- Include Choices JavaScript -->
+
+    <!-- Cropper.js (depends on jQuery and Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <!-- Include Choices.js -->
     <script src="{{ asset('frontend/dist/assets/vendors/choices.js/choices.min.js') }}"></script>
-    {{-- sweetalert2 --}}
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Session and Error Handling Scripts -->
     <script>
         @if (session('success'))
             const Toast = Swal.mixin({
@@ -73,7 +86,6 @@
                 icon: 'error',
                 title: 'Oops...',
                 html: errorList,
-
             });
         @endif
         @if (session('warning'))
@@ -93,6 +105,8 @@
             });
         @endif
     </script>
+
+    <!-- Additional scripts that might be added from other views -->
     @stack('script')
 </body>
 
