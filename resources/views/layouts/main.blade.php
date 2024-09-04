@@ -22,6 +22,33 @@
 </head>
 
 <body>
+    <!-- Disclaimer Modal -->
+    <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Website ini sedang dalam proses penyusunan. Isi dalam web ini hanya sebagai contoh uji coba
+                        Jitupasna.
+                    </p>
+                    <p>
+                        Data - Data seperti kejadian bencana, kerusakan dampak bencana, dan data lain terkait bencana
+                        merupakan data contoh dan bukan merupakan data yang sebenarnya.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="app">
         @include('layouts.sidebar')
         <div id="main">
@@ -105,7 +132,12 @@
             });
         @endif
     </script>
-
+    <script>
+        $(document).ready(function() {
+            // Show the disclaimer modal on page load
+            $('#disclaimerModal').modal('show');
+        });
+    </script>
     <!-- Additional scripts that might be added from other views -->
     @stack('script')
 </body>

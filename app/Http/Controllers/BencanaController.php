@@ -194,8 +194,8 @@ class BencanaController extends Controller
             $bencaRules = $request->validate([
                 'kategori_bencana_id' => 'required',
                 'tanggal' => 'required',
-                'kecamatan_id' => 'required',
-                'desa_ids' => 'array',
+                // 'kecamatan_id' => 'required',
+                // 'desa_ids' => 'array',
                 'latitude' => 'nullable',
                 'longitude' => 'nullable',
                 'deskripsi' => 'nullable',
@@ -230,7 +230,7 @@ class BencanaController extends Controller
             $bencana->update([
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
                 'tanggal' => $bencaRules['tanggal'],
-                'kecamatan_id' => $bencaRules['kecamatan_id'],
+                // 'kecamatan_id' => $bencaRules['kecamatan_id'],
                 'latitude' => $bencaRules['latitude'],
                 'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
@@ -243,9 +243,13 @@ class BencanaController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             \Log::error('Error updating bencana: ' . $th->getMessage());
-
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
+        // } catch (\Illuminate\Validation\ValidationException $e) {
+        //     DB::rollBack();
+
+        //     return redirect()->back()->withErrors($e->errors())->withInput();
+        // }
     }
 
     /**

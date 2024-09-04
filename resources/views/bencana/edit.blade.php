@@ -95,7 +95,8 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" action="{{ route('bencana.update', ['id' => $bencana->id]) }}" method="POST" enctype="multipart/form-data">
+                            <form class="form" action="{{ route('bencana.update', ['id' => $bencana->id]) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="row">
@@ -126,29 +127,6 @@
                                 <div class="row">
                                     {{-- <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="first-name-column">Kecamatan</label>
-                                            <div class="form-group">
-                                                <select class="choices form-select" name="kecamatan_id" id="kecamatan">
-                                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                    @foreach ($kecamatan as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->nama }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Desa</label>
-                                            <div class="form-group">
-                                                <select id="desa" multiple="multiple-remove" name="desa_ids[]">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
                                             <label for="kecamatan">Kecamatan</label>
                                             <select class="choices form-select" name="kecamatan_id" id="kecamatan">
                                                 <option disabled value="">{{ __('Pilih...') }}</option>
@@ -170,7 +148,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="row">
                                         <div class="col-md-6 col-12">
@@ -235,9 +213,8 @@
                                                                             <path fill="#5A8DEE"
                                                                                 d="M11 16V7.85l-2.6 2.6L7 9l5-5l5 5l-1.4 1.45l-2.6-2.6V16zm-5 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z" />
                                                                         </svg>
-                                                                        <input type="file" name="image"
-                                                                            class="image" id="imageInput"
-                                                                            style="display: none;">
+                                                                        <input type="file" name="image" class="image"
+                                                                            id="imageInput" style="display: none;">
                                                                     </button>
                                                                 </div>
                                                             </div>
